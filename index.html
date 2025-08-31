@@ -1,2171 +1,2171 @@
-⦁	<!DOCTYPE html>
-⦁	<html lang="en">
-⦁	<head>
-1.	    <meta charset="UTF-8">
-⦁	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-⦁	    <title>StudyFlow - Advanced Syllabus Tracker</title>
-⦁	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-⦁	    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-⦁	    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-⦁	    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-⦁	    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-⦁	    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-⦁	    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
-⦁	    <style>
-⦁	        :root {
-⦁	            --primary: #4361ee;
-⦁	            --secondary: #3a0ca3;
-⦁	            --success: #4cc9f0;
-⦁	            --warning: #f72585;
-⦁	            --light: #f8f9fa;
-⦁	            --dark: #212529;
-⦁	            --gray: #6c757d;
-⦁	            --subject-bg: #f1f3f9;
-⦁	            --chapter-bg: #e9ecef;
-⦁	            --physics: #7209b7;
-⦁	            --chemistry: #f72585;
-⦁	            --math: #3a0ca3;
-⦁	            --biology: #4cc9f0;
-⦁	            --background-image: none;
-⦁	            --background-color: #f5f7fb;
-⦁	        }
-⦁	 
-⦁	        * {
-⦁	            margin: 0;
-⦁	            padding: 0;
-⦁	            box-sizing: border-box;
-⦁	            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-⦁	        }
-⦁	 
-⦁	        body {
-⦁	            background-color: var(--background-color);
-⦁	            background-image: var(--background-image);
-⦁	            background-size: cover;
-⦁	            background-position: center;
-⦁	            background-attachment: fixed;
-⦁	            color: var(--dark);
-⦁	            line-height: 1.6;
-⦁	            padding: 20px;
-⦁	            transition: background-color 0.5s ease;
-⦁	            min-height: 100vh;
-⦁	        }
-⦁	 
-⦁	        .container {
-⦁	            max-width: 1400px;
-⦁	            margin: 0 auto;
-⦁	        }
-⦁	 
-⦁	        header {
-⦁	            text-align: center;
-⦁	            margin-bottom: 30px;
-⦁	            padding: 20px;
-⦁	            background: linear-gradient(135deg, var(--primary), var(--secondary));
-⦁	            color: white;
-⦁	            border-radius: 10px;
-⦁	            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-⦁	            position: relative;
-⦁	            backdrop-filter: blur(5px);
-⦁	            background-color: rgba(67, 97, 238, 0.85);
-⦁	        }
-⦁	 
-⦁	        .auth-section {
-⦁	            position: absolute;
-⦁	            top: 20px;
-⦁	            right: 20px;
-⦁	            display: flex;
-⦁	            gap: 10px;
-⦁	        }
-⦁	 
-⦁	        .auth-btn {
-⦁	            padding: 8px 15px;
-⦁	            background-color: rgba(255, 255, 255, 0.2);
-⦁	            color: white;
-⦁	            border: 1px solid rgba(255, 255, 255, 0.3);
-⦁	            border-radius: 5px;
-⦁	            cursor: pointer;
-⦁	            transition: all 0.3s;
-⦁	        }
-⦁	 
-⦁	        .auth-btn:hover {
-⦁	            background-color: rgba(255, 255, 255, 0.3);
-⦁	        }
-⦁	 
-⦁	        .user-info {
-⦁	            display: flex;
-⦁	            align-items: center;
-⦁	            gap: 10px;
-⦁	            color: white;
-⦁	        }
-⦁	 
-⦁	        .user-avatar {
-⦁	            width: 32px;
-⦁	            height: 32px;
-⦁	            border-radius: 50%;
-⦁	            background-color: white;
-⦁	            display: flex;
-⦁	            align-items: center;
-⦁	            justify-content: center;
-⦁	            color: var(--primary);
-⦁	            font-weight: bold;
-⦁	        }
-⦁	 
-⦁	        .theme-selector {
-⦁	            margin-top: 15px;
-⦁	            display: flex;
-⦁	            justify-content: center;
-⦁	            gap: 10px;
-⦁	        }
-⦁	 
-⦁	        .theme-btn {
-⦁	            width: 30px;
-⦁	            height: 30px;
-⦁	            border-radius: 50%;
-⦁	            border: 2px solid white;
-⦁	            cursor: pointer;
-⦁	            transition: transform 0.2s;
-⦁	        }
-⦁	 
-⦁	        .theme-btn:hover {
-⦁	            transform: scale(1.1);
-⦁	        }
-⦁	 
-⦁	        .theme-btn.active {
-⦁	            transform: scale(1.15);
-⦁	            box-shadow: 0 0 5px white;
-⦁	        }
-⦁	 
-⦁	        #theme-light { background: linear-gradient(135deg, #f5f7fb, #e9ecef); }
-⦁	        #theme-dark { background: linear-gradient(135deg, #212529, #343a40); }
-⦁	        #theme-blue { background: linear-gradient(135deg, #4361ee, #3a0ca3); }
-⦁	        #theme-green { background: linear-gradient(135deg, #2ec4b6, #0a9396); }
-⦁	        #theme-custom {
-⦁	            background: linear-gradient(135deg, #ff9e00, #ff006e);
-⦁	            display: flex;
-⦁	            align-items: center;
-⦁	            justify-content: center;
-⦁	            color: white;
-⦁	            font-size: 14px;
-⦁	        }
-⦁	 
-⦁	        h1 {
-⦁	            font-size: 2.5rem;
-⦁	            margin-bottom: 10px;
-⦁	        }
-⦁	 
-⦁	        .dashboard {
-⦁	            display: grid;
-⦁	            grid-template-columns: 1fr 1fr;
-⦁	            gap: 20px;
-⦁	            margin-bottom: 30px;
-⦁	        }
-⦁	 
-⦁	        @media (max-width: 992px) {
-⦁	            .dashboard {
-⦁	                grid-template-columns: 1fr;
-⦁	            }
-⦁	        }
-⦁	 
-⦁	        .progress-summary {
-⦁	            background-color: rgba(255, 255, 255, 0.9);
-⦁	            padding: 20px;
-⦁	            border-radius: 10px;
-⦁	            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-⦁	            text-align: center;
-⦁	            backdrop-filter: blur(5px);
-⦁	        }
-⦁	 
-⦁	        .progress-bar {
-⦁	            height: 20px;
-⦁	            background-color: #e9ecef;
-⦁	            border-radius: 10px;
-⦁	            margin: 15px 0;
-⦁	            overflow: hidden;
-⦁	        }
-⦁	 
-⦁	        .progress-fill {
-⦁	            height: 100%;
-⦁	            background: linear-gradient(90deg, var(--success), var(--primary));
-⦁	            border-radius: 10px;
-⦁	            transition: width 0.5s ease;
-⦁	        }
-⦁	 
-⦁	        .calendar-section {
-⦁	            background-color: rgba(255, 255, 255, 0.9);
-⦁	            padding: 20px;
-⦁	            border-radius: 10px;
-⦁	            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-⦁	            backdrop-filter: blur(5px);
-⦁	        }
-⦁	 
-⦁	        .calendar-header {
-⦁	            display: flex;
-⦁	            justify-content: space-between;
-⦁	            align-items: center;
-⦁	            margin-bottom: 15px;
-⦁	        }
-⦁	 
-⦁	        #study-calendar {
-⦁	            width: 100%;
-⦁	            height: 200px;
-⦁	            border: 1px solid #e9ecef;
-⦁	            border-radius: 5px;
-⦁	            padding: 10px;
-⦁	        }
-⦁	 
-⦁	        .subjects-container {
-⦁	            display: grid;
-⦁	            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-⦁	            gap: 20px;
-⦁	            margin-bottom: 30px;
-⦁	        }
-⦁	 
-⦁	        .subject {
-⦁	            background-color: rgba(241, 243, 249, 0.9);
-⦁	            border-radius: 10px;
-⦁	            padding: 20px;
-⦁	            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-⦁	            position: relative;
-⦁	            backdrop-filter: blur(5px);
-⦁	        }
-⦁	 
-⦁	        .subject-header {
-⦁	            display: flex;
-⦁	            justify-content: space-between;
-⦁	            align-items: center;
-⦁	            margin-bottom: 15px;
-⦁	            padding-bottom: 10px;
-⦁	            border-bottom: 2px solid var(--primary);
-⦁	        }
-⦁	 
-⦁	        .subject-title {
-⦁	            font-size: 1.5rem;
-⦁	            font-weight: 600;
-⦁	        }
-⦁	 
-⦁	        .subject.physics .subject-title { color: var(--physics); }
-⦁	        .subject.chemistry .subject-title { color: var(--chemistry); }
-⦁	        .subject.math .subject-title { color: var(--math); }
-⦁	        .subject.biology .subject-title { color: var(--biology); }
-⦁	 
-⦁	        .subject-actions {
-⦁	            display: flex;
-⦁	            gap: 10px;
-⦁	        }
-⦁	 
-⦁	        .add-chapter-btn, .upload-pdf-btn, .notes-btn {
-⦁	            background-color: var(--primary);
-⦁	            color: white;
-⦁	            border: none;
-⦁	            border-radius: 5px;
-⦁	            padding: 8px 12px;
-⦁	            cursor: pointer;
-⦁	            font-size: 0.9rem;
-⦁	            display: flex;
-⦁	            align-items: center;
-⦁	            gap: 5px;
-⦁	        }
-⦁	 
-⦁	        .add-chapter-btn:hover, .upload-pdf-btn:hover, .notes-btn:hover {
-⦁	            background-color: var(--secondary);
-⦁	        }
-⦁	 
-⦁	        .chapter {
-⦁	            background-color: var(--chapter-bg);
-⦁	            border-radius: 8px;
-⦁	            padding: 15px;
-⦁	            margin-bottom: 15px;
-⦁	            position: relative;
-⦁	        }
-⦁	 
-⦁	        .chapter-header {
-⦁	            display: flex;
-⦁	            justify-content: space-between;
-⦁	            margin-bottom: 10px;
-⦁	        }
-⦁	 
-⦁	        .chapter-title {
-⦁	            font-size: 1.2rem;
-⦁	            color: var(--dark);
-⦁	            font-weight: 500;
-⦁	        }
-⦁	 
-⦁	        .chapter-time {
-⦁	            font-size: 0.8rem;
-⦁	            color: var(--gray);
-⦁	            margin-top: 5px;
-⦁	        }
-⦁	 
-⦁	        .chapter-parts {
-⦁	            display: grid;
-⦁	            grid-template-columns: 1fr;
-⦁	            gap: 10px;
-⦁	            margin-bottom: 15px;
-⦁	        }
-⦁	 
-⦁	        .part {
-⦁	            display: flex;
-⦁	            justify-content: space-between;
-⦁	            align-items: center;
-⦁	            padding: 10px;
-⦁	            background-color: white;
-⦁	            border-radius: 6px;
-⦁	            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-⦁	        }
-⦁	 
-⦁	        .part-title {
-⦁	            font-size: 0.9rem;
-⦁	            font-weight: 500;
-⦁	        }
-⦁	 
-⦁	        .circle-progress {
-⦁	            width: 30px;
-⦁	            height: 30px;
-⦁	            border-radius: 50%;
-⦁	            background: conic-gradient(var(--success) 0%, #e9ecef 0%);
-⦁	            position: relative;
-⦁	            cursor: pointer;
-⦁	            transition: transform 0.2s;
-⦁	        }
-⦁	 
-⦁	        .circle-progress:hover {
-⦁	            transform: scale(1.1);
-⦁	        }
-⦁	 
-⦁	        .circle-progress::after {
-⦁	            content: '';
-⦁	            position: absolute;
-⦁	            width: 20px;
-⦁	            height: 20px;
-⦁	            background: white;
-⦁	            border-radius: 50%;
-⦁	            top: 5px;
-⦁	            left: 5px;
-⦁	        }
-⦁	 
-⦁	        .exam-mark {
-⦁	            display: flex;
-⦁	            align-items: center;
-⦁	            gap: 10px;
-⦁	        }
-⦁	 
-⦁	        .mark-input {
-⦁	            width: 60px;
-⦁	            padding: 5px;
-⦁	            border: 1px solid var(--gray);
-⦁	            border-radius: 4px;
-⦁	            text-align: center;
-⦁	        }
-⦁	 
-⦁	        .add-subject-btn {
-⦁	            display: flex;
-⦁	            justify-content: center;
-⦁	            align-items: center;
-⦁	            background-color: white;
-⦁	            border: 2px dashed var(--primary);
-⦁	            border-radius: 10px;
-⦁	            padding: 20px;
-⦁	            cursor: pointer;
-⦁	            transition: all 0.3s ease;
-⦁	            min-height: 200px;
-⦁	            backdrop-filter: blur(5px);
-⦁	            background-color: rgba(255, 255, 255, 0.8);
-⦁	        }
-⦁	 
-⦁	        .add-subject-btn:hover {
-⦁	            background-color: #f0f4ff;
-⦁	            transform: scale(1.02);
-⦁	        }
-⦁	 
-⦁	        .add-icon {
-⦁	            font-size: 3rem;
-⦁	            color: var(--primary);
-⦁	        }
-⦁	 
-⦁	        .quote-box {
-⦁	            background: linear-gradient(135deg, rgba(76, 201, 240, 0.85), rgba(67, 97, 238, 0.85));
-⦁	            color: white;
-⦁	            padding: 25px;
-⦁	            border-radius: 10px;
-⦁	            text-align: center;
-⦁	            margin-top: 30px;
-⦁	            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-⦁	            backdrop-filter: blur(5px);
-⦁	        }
-⦁	 
-⦁	        .quote-text {
-⦁	            font-size: 1.2rem;
-⦁	            font-style: italic;
-⦁	            margin-bottom: 10px;
-⦁	        }
-⦁	 
-⦁	        .quote-author {
-⦁	            font-weight: 500;
-⦁	        }
-⦁	 
-⦁	        .controls {
-⦁	            display: flex;
-⦁	            justify-content: center;
-⦁	            flex-wrap: wrap;
-⦁	            margin-top: 30px;
-⦁	            gap: 15px;
-⦁	        }
-⦁	 
-⦁	        button {
-⦁	            padding: 12px 25px;
-⦁	            background-color: var(--primary);
-⦁	            color: white;
-⦁	            border: none;
-⦁	            border-radius: 8px;
-⦁	            cursor: pointer;
-⦁	            font-size: 1rem;
-⦁	            font-weight: 600;
-⦁	            transition: all 0.3s ease;
-⦁	        }
-⦁	 
-⦁	        button:hover {
-⦁	            background-color: var(--secondary);
-⦁	            transform: translateY(-2px);
-⦁	        }
-⦁	 
-⦁	        .custom-theme-panel {
-⦁	            background-color: white;
-⦁	            padding: 20px;
-⦁	            border-radius: 10px;
-⦁	            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-⦁	            margin-top: 20px;
-⦁	            display: none;
-⦁	        }
-⦁	 
-⦁	        .color-picker {
-⦁	            display: flex;
-⦁	            gap: 15px;
-⦁	            flex-wrap: wrap;
-⦁	            margin-bottom: 15px;
-⦁	        }
-⦁	 
-⦁	        .color-option {
-⦁	            width: 40px;
-⦁	            height: 40px;
-⦁	            border-radius: 5px;
-⦁	            cursor: pointer;
-⦁	            transition: transform 0.2s;
-⦁	        }
-⦁	 
-⦁	        .color-option:hover {
-⦁	            transform: scale(1.1);
-⦁	        }
-⦁	 
-⦁	        .background-upload {
-⦁	            margin-top: 15px;
-⦁	        }
-⦁	 
-⦁	        .pdf-list {
-⦁	            margin-top: 15px;
-⦁	            max-height: 150px;
-⦁	            overflow-y: auto;
-⦁	        }
-⦁	 
-⦁	        .pdf-item {
-⦁	            display: flex;
-⦁	            justify-content: space-between;
-⦁	            align-items: center;
-⦁	            padding: 8px;
-⦁	            background-color: #f8f9fa;
-⦁	            border-radius: 4px;
-⦁	            margin-bottom: 5px;
-⦁	        }
-⦁	 
-⦁	        .pdf-item a {
-⦁	            color: var(--primary);
-⦁	            text-decoration: none;
-⦁	        }
-⦁	 
-⦁	        .pdf-item a:hover {
-⦁	            text-decoration: underline;
-⦁	        }
-⦁	 
-⦁	        .delete-pdf {
-⦁	            color: #dc3545;
-⦁	            cursor: pointer;
-⦁	        }
-⦁	 
-⦁	        .modal {
-⦁	            display: none;
-⦁	            position: fixed;
-⦁	            top: 0;
-⦁	            left: 0;
-⦁	            width: 100%;
-⦁	            height: 100%;
-⦁	            background-color: rgba(0, 0, 0, 0.7);
-⦁	            z-index: 1000;
-⦁	            justify-content: center;
-⦁	            align-items: center;
-⦁	        }
-⦁	 
-⦁	        .modal-content {
-⦁	            background-color: white;
-⦁	            padding: 20px;
-⦁	            border-radius: 10px;
-⦁	            width: 400px;
-⦁	            max-width: 90%;
-⦁	            max-height: 80vh;
-⦁	            overflow-y: auto;
-⦁	        }
-⦁	 
-⦁	        .modal h3 {
-⦁	            margin-bottom: 15px;
-⦁	        }
-⦁	 
-⦁	        .modal-actions {
-⦁	            display: flex;
-⦁	            justify-content: flex-end;
-⦁	            gap: 10px;
-⦁	            margin-top: 20px;
-⦁	        }
-⦁	 
-⦁	        .notes-container {
-⦁	            margin-top: 15px;
-⦁	        }
-⦁	 
-⦁	        .notes-textarea {
-⦁	            width: 100%;
-⦁	            min-height: 100px;
-⦁	            padding: 10px;
-⦁	            border: 1px solid #ddd;
-⦁	            border-radius: 5px;
-⦁	            resize: vertical;
-⦁	        }
-⦁	 
-⦁	        .time-tracker {
-⦁	            display: flex;
-⦁	            align-items: center;
-⦁	            gap: 10px;
-⦁	            margin-top: 10px;
-⦁	        }
-⦁	 
-⦁	        .time-display {
-⦁	            font-size: 0.9rem;
-⦁	            color: var(--gray);
-⦁	        }
-⦁	 
-⦁	        .tab-container {
-⦁	            margin-top: 20px;
-⦁	        }
-⦁	 
-⦁	        .tabs {
-⦁	            display: flex;
-⦁	            border-bottom: 1px solid #ddd;
-⦁	            margin-bottom: 15px;
-⦁	        }
-⦁	 
-⦁	        .tab {
-⦁	            padding: 10px 20px;
-⦁	            cursor: pointer;
-⦁	            border-bottom: 2px solid transparent;
-⦁	        }
-⦁	 
-⦁	        .tab.active {
-⦁	            border-bottom: 2px solid var(--primary);
-⦁	            color: var(--primary);
-⦁	        }
-⦁	 
-⦁	        .tab-content {
-⦁	            display: none;
-⦁	        }
-⦁	 
-⦁	        .tab-content.active {
-⦁	            display: block;
-⦁	            animation: fadeIn 0.3s;
-⦁	        }
-⦁	 
-⦁	        @keyframes fadeIn {
-⦁	            from { opacity: 0; }
-⦁	            to { opacity: 1; }
-⦁	        }
-⦁	 
-⦁	        .chart-container {
-⦁	            height: 300px;
-⦁	            margin-top: 20px;
-⦁	        }
-⦁	 
-⦁	        .collaboration-section {
-⦁	            background-color: rgba(255, 255, 255, 0.9);
-⦁	            padding: 20px;
-⦁	            border-radius: 10px;
-⦁	            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-⦁	            margin-top: 30px;
-⦁	            backdrop-filter: blur(5px);
-⦁	        }
-⦁	 
-⦁	        .user-list {
-⦁	            display: flex;
-⦁	            gap: 10px;
-⦁	            flex-wrap: wrap;
-⦁	            margin-top: 15px;
-⦁	        }
-⦁	 
-⦁	        .user-badge {
-⦁	            display: flex;
-⦁	            align-items: center;
-⦁	            gap: 5px;
-⦁	            padding: 5px 10px;
-⦁	            background-color: #e9ecef;
-⦁	            border-radius: 20px;
-⦁	            font-size: 0.9rem;
-⦁	        }
-⦁	 
-⦁	        .user-avatar-sm {
-⦁	            width: 20px;
-⦁	            height: 20px;
-⦁	            border-radius: 50%;
-⦁	            background-color: var(--primary);
-⦁	            display: flex;
-⦁	            align-items: center;
-⦁	            justify-content: center;
-⦁	            color: white;
-⦁	            font-size: 0.7rem;
-⦁	            font-weight: bold;
-⦁	        }
-⦁	 
-⦁	        @media (max-width: 768px) {
-⦁	            .subjects-container {
-⦁	                grid-template-columns: 1fr;
-⦁	            }
-⦁	 
-⦁	            .subject-header {
-⦁	                flex-direction: column;
-⦁	                align-items: flex-start;
-⦁	                gap: 10px;
-⦁	            }
-⦁	 
-⦁	            .subject-actions {
-⦁	                width: 100%;
-⦁	                justify-content: space-between;
-⦁	            }
-⦁	 
-⦁	            .theme-selector {
-⦁	                justify-content: center;
-⦁	                margin-top: 15px;
-⦁	            }
-⦁	 
-⦁	            .auth-section {
-⦁	                position: static;
-⦁	                justify-content: center;
-⦁	                margin-top: 15px;
-⦁	            }
-⦁	        }
-⦁	    </style>
-⦁	</head>
-⦁	<body>
-⦁	    <div class="container">
-⦁	        <header>
-⦁	            <h1>StudyFlow - Syllabus Tracker</h1>
-⦁	            <p>Track your progress with detailed analytics and collaboration features</p>
-⦁	 
-⦁	            <div class="auth-section">
-⦁	                <div id="auth-buttons">
-⦁	                    <button class="auth-btn" id="google-signin"><i class="fab fa-google"> Sign in with Google</button>
-⦁	                    <button class="auth-btn" id="github-signin"><i class="fab fa-github"> Sign in with GitHub</button>
-⦁	                </div>
-⦁	                <div id="user-info" class="user-info" style="display: none;">
-⦁	                    <div class="user-avatar" id="user-avatar">U</div>
-⦁	                    <span id="user-name">User</span>
-⦁	                    <button class="auth-btn" id="sign-out">Sign Out</button>
-⦁	                </div>
-⦁	            </div>
-⦁	 
-⦁	            <div class="theme-selector">
-⦁	                <div class="theme-btn active" id="theme-light" title="Light Theme" aria-label="Light theme"></div>
-⦁	                <div class="theme-btn" id="theme-dark" title="Dark Theme" aria-label="Dark theme"></div>
-⦁	                <div class="theme-btn" id="theme-blue" title="Blue Theme" aria-label="Blue theme"></div>
-⦁	                <div class="theme-btn" id="theme-green" title="Green Theme" aria-label="Green theme"></div>
-⦁	                <div class="theme-btn" id="theme-custom" title="Custom Background" aria-label="Custom background">BG</div>
-⦁	            </div>
-⦁	        </header>
-⦁	 
-⦁	        <div class="dashboard">
-⦁	            <div class="progress-summary">
-⦁	                <h2>Overall Progress: <span id="progress-percentage">0%</span></h2>
-⦁	                <div class="progress-bar">
-⦁	                    <div class="progress-fill" style="width: 0%"></div>
-⦁	                </div>
-⦁	                <p>Completed: <span id="completed-count">0</span> out of <span id="total-count">0</span> topics</p>
-⦁	                <div class="time-tracker">
-⦁	                    <span>Total study time: </span>
-⦁	                    <span class="time-display" id="total-time">0h 0m</span>
-⦁	                </div>
-⦁	            </div>
-⦁	 
-⦁	            <div class="calendar-section">
-⦁	                <div class="calendar-header">
-⦁	                    <h3>Study Planner</h3>
-⦁	                    <button id="add-to-calendar"><i class="fas fa-plus"> Add Session</button>
-⦁	                </div>
-⦁	                <div id="study-calendar"></div>
-⦁	            </div>
-⦁	        </div>
-⦁	 
-⦁	        <div class="tab-container">
-⦁	            <div class="tabs">
-⦁	                <div class="tab active" data-tab="syllabus">Syllabus</div>
-⦁	                <div class="tab" data-tab="analytics">Analytics</div>
-⦁	                <div class="tab" data-tab="collaboration">Collaboration</div>
-⦁	            </div>
-⦁	 
-⦁	            <div class="tab-content active" id="syllabus-tab">
-⦁	                <div class="subjects-container" id="subjects-container">
-⦁	                    <!-- Subjects will be dynamically added here -->
-⦁	                </div>
-⦁	            </div>
-⦁	 
-⦁	            <div class="tab-content" id="analytics-tab">
-⦁	                <div class="progress-summary">
-⦁	                    <h3>Progress Analytics</h3>
-⦁	                    <div class="chart-container">
-⦁	                        <canvas id="progress-chart"></canvas>
-⦁	                    </div>
-⦁	                </div>
-⦁	            </div>
-⦁	 
-⦁	            <div class="tab-content" id="collaboration-tab">
-⦁	                <div class="collaboration-section">
-⦁	                    <h3>Collaborate with Classmates</h3>
-⦁	                    <p>Invite friends to track progress together</p>
-⦁	                    <div class="user-list" id="user-list">
-⦁	                        <!-- Collaborators will be listed here -->
-⦁	                    </div>
-⦁	                    <div style="margin-top: 15px;">
-⦁	                        <input type="text" id="invite-email" placeholder="Enter email to invite" style="padding: 8px; width: 200px; border: 1px solid #ddd; border-radius: 4px;">
-⦁	                        <button id="send-invite" style="margin-left: 10px;">Send Invite</button>
-⦁	                    </div>
-⦁	                </div>
-⦁	            </div>
-⦁	        </div>
-⦁	 
-⦁	        <div class="custom-theme-panel" id="custom-theme-panel">
-⦁	            <h3>Customize Background</h3>
-⦁	            <div class="background-upload">
-⦁	                <p>Upload your own background image:</p>
-⦁	                <input type="file" id="bg-upload" accept="image/\*" style="margin: 10px 0;">
-⦁	                <button id="apply-bg">Apply Background</button>
-⦁	                <button id="reset-bg" style="background-color: #6c757d;">Reset to Default</button>
-⦁	            </div>
-⦁	        </div>
-⦁	 
-⦁	        <div class="quote-box">
-⦁	            <p class="quote-text" id="motivational-quote">"The journey of a thousand miles begins with a single step."</p>
-⦁	            <p class="quote-author">- Lao Tzu</p>
-⦁	        </div>
-⦁	 
-⦁	        <div class="controls">
-⦁	            <button id="save-btn">Save Progress</button>
-⦁	            <button id="reset-btn">Reset All</button>
-⦁	            <button id="export-btn">Export Data</button>
-⦁	            <button id="import-btn">Import Data</button>
-⦁	            <button id="reminder-btn">Set Reminder</button>
-⦁	            <button id="notifications-btn">Enable Notifications</button>
-⦁	        </div>
-⦁	 
-⦁	        <input type="file" id="import-file" accept=".json" style="display: none;">
-⦁	    </div>
-⦁	
-⦁	    <!-- Modal for PDF Upload -->
-⦁	    <div class="modal" id="pdf-modal">
-⦁	        <div class="modal-content">
-⦁	            <h3>Upload PDF for <span id="pdf-subject-name"></span></h3>
-⦁	            <input type="file" id="pdf-upload" accept=".pdf" style="margin: 10px 0; width: 100%;">
-⦁	            <div class="pdf-list" id="pdf-list">
-⦁	                <!-- PDF list will be populated here -->
-⦁	            </div>
-⦁	            <div class="modal-actions">
-⦁	                <button id="close-pdf-modal">Close</button>
-⦁	            </div>
-⦁	        </div>
-⦁	    </div>
-⦁	
-⦁	    <!-- Modal for Notes -->
-⦁	    <div class="modal" id="notes-modal">
-⦁	        <div class="modal-content">
-⦁	            <h3>Notes for <span id="notes-chapter-name"></span></h3>
-⦁	            <div class="notes-container">
-⦁	                <textarea class="notes-textarea" id="notes-text" placeholder="Add your notes here..."></textarea>
-⦁	            </div>
-⦁	            <div class="modal-actions">
-⦁	                <button id="save-notes">Save Notes</button>
-⦁	                <button id="close-notes-modal">Close</button>
-⦁	            </div>
-⦁	        </div>
-⦁	    </div>
-⦁	
-⦁	    <!-- Modal for Reminder -->
-⦁	    <div class="modal" id="reminder-modal">
-⦁	        <div class="modal-content">
-⦁	            <h3>Set Study Reminder</h3>
-⦁	            <div style="margin: 15px 0;">
-⦁	                <label for="reminder-time">Remind me at:</label>
-⦁	                <input type="datetime-local" id="reminder-time" style="padding: 8px; width: 100%; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px;">
-⦁	            </div>
-⦁	            <div style="margin: 15px 0;">
-⦁	                <label for="reminder-message">Message:</label>
-⦁	                <input type="text" id="reminder-message" placeholder="Study reminder" style="padding: 8px; width: 100%; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px;">
-⦁	            </div>
-⦁	            <div class="modal-actions">
-⦁	                <button id="set-reminder">Set Reminder</button>
-⦁	                <button id="close-reminder-modal">Cancel</button>
-⦁	            </div>
-⦁	        </div>
-⦁	    </div>
-⦁	
-⦁	    <script>
-⦁	        // Sample syllabus data with the requested subjects and chapters
-⦁	        const syllabusData = [
-⦁	            {
-⦁	                id: "physics",
-⦁	                name: "Physics",
-⦁	                color: "physics",
-⦁	                pdfs: [],
-⦁	                chapters: [
-⦁	                    { id: "vector", name: "Vector", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "newtonian", name: "Newtonian Mechanics", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "work-power", name: "Work, Power & Energy", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "gravitation", name: "Gravitation & Gravity", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "structural", name: "Structural Properties of Matter", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "periodic", name: "Periodic Motion", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "ideal-gas", name: "Ideal Gas", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "thermodynamics", name: "Thermodynamics", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "electrostatics", name: "Electrostatics", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "current-electricity", name: "Current Electricity", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "optics", name: "Physical Optics", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "modern-physics", name: "Introduction of Modern Physics", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "atomic", name: "Atomic Model & Nuclear Physics", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "semiconductor", name: "Semiconductor & Electronics", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 }
-⦁	                ]
-⦁	            },
-⦁	            {
-⦁	                id: "chemistry",
-⦁	                name: "Chemistry",
-⦁	                color: "chemistry",
-⦁	                pdfs: [],
-⦁	                chapters: [
-⦁	                    { id: "qualitative", name: "Qualitative Chemistry", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "periodic-properties", name: "Periodic Properties & Bonding", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "chemical-change", name: "Chemical Change", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "vocational", name: "Vocational Chemistry", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "environmental", name: "Environmental Chemistry", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "organic", name: "Organic Chemistry", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "quantitative", name: "Quantitative Chemistry", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "electro-chemistry", name: "Electro-chemistry", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 }
-⦁	                ]
-⦁	            },
-⦁	            {
-⦁	                id: "math",
-⦁	                name: "Higher Mathematics",
-⦁	                color: "math",
-⦁	                pdfs: [],
-⦁	                chapters: [
-⦁	                    { id: "matrix", name: "Matrix & Determinant", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "straight-line", name: "Straight Line", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "circle", name: "Circle", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "trigonometry", name: "Trigonometry", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "differentiation", name: "Differentiation", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "integration", name: "Integration", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "complex-number", name: "Complex Number", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "polynomials", name: "Polynomials & Polynomial Equation", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "inverse-trig", name: "Inverse Trigonometry", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "conics", name: "Conics", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "statics", name: "Statics", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "dynamics", name: "Dynamics", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 }
-⦁	                ]
-⦁	            },
-⦁	            {
-⦁	                id: "biology",
-⦁	                name: "Biology",
-⦁	                color: "biology",
-⦁	                pdfs: [],
-⦁	                chapters: [
-⦁	                    { id: "cell", name: "Cell & Cell Structure", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "cell-division", name: "Cell Division", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "microbiology", name: "Microbiology", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "plants", name: "Gymnosperms & Angiosperms", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "tissue", name: "Tissue & Tissue System", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "plant-physiology", name: "Plant Physiology", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "biotechnology", name: "Biotechnology", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "animal-diversity", name: "Animal Diversity & Classification", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "animal-identity", name: "Animal Identity", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "digestion", name: "Digestion & Absorption", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "blood", name: "Blood & Circulation", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "respiration", name: "Respiration & Breathing", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "locomotion", name: "Locomotion & Movement", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
-⦁	                    { id: "genetics", name: "Genetics & Evolution", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 }
-⦁	                ]
-⦁	            }
-⦁	        ];
-⦁	
-⦁	        // Motivational quotes
-⦁	        const motivationalQuotes = [
-⦁	            { text: "The journey of a thousand miles begins with a single step.", author: "Lao Tzu" },
-⦁	            { text: "Education is the most powerful weapon which you can use to change the world.", author: "Nelson Mandela" },
-⦁	            { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
-⦁	            { text: "Success is not final, failure is not fatal: It is the courage to continue that counts.", author: "Winston Churchill" },
-⦁	            { text: "The harder you work for something, the greater you'll feel when you achieve it.", author: "Unknown" },
-⦁	            { text: "Don't let what you cannot do interfere with what you can do.", author: "John Wooden" },
-⦁	            { text: "Your time is limited, don't waste it living someone else's life.", author: "Steve Jobs" },
-⦁	            { text: "It's not about having time, it's about making time.", author: "Unknown" },
-⦁	            { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
-⦁	            { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" }
-⦁	        ];
-⦁	
-⦁	        // Global variables
-⦁	        let currentUser = null;
-⦁	        let studySessions = [];
-⦁	        let collaborators = [];
-⦁	        let progressChart = null;
-⦁	        let timers = {};
-⦁	
-⦁	        // Initialize the app
-⦁	        document.addEventListener('DOMContentLoaded', function() {
-⦁	            // Load data from localStorage if available
-⦁	            let savedData = JSON.parse(localStorage.getItem('syllabusData'));
-⦁	            let progress = JSON.parse(localStorage.getItem('syllabusProgress')) || {};
-⦁	            let customBg = localStorage.getItem('customBackground');
-⦁	            let userData = JSON.parse(localStorage.getItem('userData'));
-⦁	            let sessions = JSON.parse(localStorage.getItem('studySessions')) || [];
-⦁	            let collabData = JSON.parse(localStorage.getItem('collaborators')) || [];
-⦁	 
-⦁	            if (savedData) {
-⦁	                // Merge saved data with default structure to ensure new properties are added
-⦁	                syllabusData.forEach((subject, index) => {
-⦁	                    if (savedData[index]) {
-⦁	                        subject.pdfs = savedData[index].pdfs || [];
-⦁	                        // Preserve any custom chapters added
-⦁	                        if (savedData[index].chapters) {
-⦁	                            subject.chapters = savedData[index].chapters;
-⦁	                        }
-⦁	                    }
-⦁	                });
-⦁	            }
-⦁	 
-⦁	            if (userData) {
-⦁	                currentUser = userData;
-⦁	                showUserInfo();
-⦁	            }
-⦁	 
-⦁	            if (sessions) {
-⦁	                studySessions = sessions;
-⦁	            }
-⦁	 
-⦁	            if (collabData) {
-⦁	                collaborators = collabData;
-⦁	            }
-⦁	 
-⦁	            // Apply custom background if set
-⦁	            if (customBg) {
-⦁	                document.body.style.setProperty('--background-image', `url(${customBg})`);
-⦁	                document.body.style.setProperty('--background-color', 'transparent');
-⦁	            }
-⦁	 
-⦁	            // Set a random motivational quote
-⦁	            setRandomQuote();
-⦁	 
-⦁	            // Render the syllabus
-⦁	            renderSyllabus(progress);
-⦁	 
-⦁	            // Initialize calendar
-⦁	            initCalendar();
-⦁	 
-⦁	            // Initialize tabs
-⦁	            initTabs();
-⦁	 
-⦁	            // Add event listeners to buttons
-⦁	            document.getElementById('save-btn').addEventListener('click', saveProgress);
-⦁	            document.getElementById('reset-btn').addEventListener('click', resetProgress);
-⦁	            document.getElementById('export-btn').addEventListener('click', exportData);
-⦁	            document.getElementById('import-btn').addEventListener('click', () => document.getElementById('import-file').click());
-⦁	            document.getElementById('import-file').addEventListener('change', importData);
-⦁	            document.getElementById('reminder-btn').addEventListener('click', () => {
-⦁	                document.getElementById('reminder-modal').style.display = 'flex';
-⦁	            });
-⦁	            document.getElementById('notifications-btn').addEventListener('click', requestNotificationPermission);
-⦁	 
-⦁	            // Add event listener for adding new subjects
-⦁	            document.getElementById('add-subject-btn').addEventListener('click', addNewSubject);
-⦁	 
-⦁	            // Theme selector functionality
-⦁	            document.querySelectorAll('.theme-btn').forEach(btn => {
-⦁	                btn.addEventListener('click', function() {
-⦁	                    if (this.id === 'theme-custom') {
-⦁	                        document.getElementById('custom-theme-panel').style.display = 'block';
-⦁	                        return;
-⦁	                    }
-⦁	 
-⦁	                    document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
-⦁	                    this.classList.add('active');
-⦁	 
-⦁	                    // Apply theme
-⦁	                    applyTheme(this.id);
-⦁	                    document.getElementById('custom-theme-panel').style.display = 'none';
-⦁	                });
-⦁	            });
-⦁	 
-⦁	            // Background upload functionality
-⦁	            document.getElementById('apply-bg').addEventListener('click', applyCustomBackground);
-⦁	            document.getElementById('reset-bg').addEventListener('click', resetBackground);
-⦁	 
-⦁	            // PDF modal functionality
-⦁	            document.getElementById('close-pdf-modal').addEventListener('click', () => {
-⦁	                document.getElementById('pdf-modal').style.display = 'none';
-⦁	            });
-⦁	 
-⦁	            document.getElementById('pdf-upload').addEventListener('change', handlePdfUpload);
-⦁	 
-⦁	            // Notes modal functionality
-⦁	            document.getElementById('close-notes-modal').addEventListener('click', () => {
-⦁	                document.getElementById('notes-modal').style.display = 'none';
-⦁	            });
-⦁	 
-⦁	            document.getElementById('save-notes').addEventListener('click', saveNotes);
-⦁	 
-⦁	            // Reminder modal functionality
-⦁	            document.getElementById('close-reminder-modal').addEventListener('click', () => {
-⦁	                document.getElementById('reminder-modal').style.display = 'none';
-⦁	            });
-⦁	 
-⦁	            document.getElementById('set-reminder').addEventListener('click', setReminder);
-⦁	 
-⦁	            // Auth functionality
-⦁	            document.getElementById('google-signin').addEventListener('click', () => simulateAuth('Google'));
-⦁	            document.getElementById('github-signin').addEventListener('click', () => simulateAuth('GitHub'));
-⦁	            document.getElementById('sign-out').addEventListener('click', signOut);
-⦁	 
-⦁	            // Collaboration functionality
-⦁	            document.getElementById('send-invite').addEventListener('click', sendInvite);
-⦁	 
-⦁	            // Calendar functionality
-⦁	            document.getElementById('add-to-calendar').addEventListener('click', addStudySession);
-⦁	 
-⦁	            // Initialize analytics chart
-⦁	            initProgressChart();
-⦁	        });
-⦁	
-⦁	        // Function to render the syllabus
-⦁	        function renderSyllabus(progress) {
-⦁	            const container = document.getElementById('subjects-container');
-⦁	            container.innerHTML = '';
-⦁	 
-⦁	            let totalParts = 0;
-⦁	            let completedParts = 0;
-⦁	            let totalTime = 0;
-⦁	 
-⦁	            syllabusData.forEach(subject => {
-⦁	                const subjectElement = document.createElement('div');
-⦁	                subjectElement.className = `subject ${subject.color}`;
-⦁	 
-⦁	                // Create subject header
-⦁	                const subjectHeader = document.createElement('div');
-⦁	                subjectHeader.className = 'subject-header';
-⦁	 
-⦁	                const subjectTitle = document.createElement('h2');
-⦁	                subjectTitle.className = 'subject-title';
-⦁	                subjectTitle.textContent = subject.name;
-⦁	 
-⦁	                const subjectActions = document.createElement('div');
-⦁	                subjectActions.className = 'subject-actions';
-⦁	 
-⦁	                const addChapterBtn = document.createElement('button');
-⦁	                addChapterBtn.className = 'add-chapter-btn';
-⦁	                addChapterBtn.innerHTML = '<i class="fas fa-plus"> Chapter';
-⦁	                addChapterBtn.addEventListener('click', () => addNewChapter(subject.id));
-⦁	 
-⦁	                const uploadPdfBtn = document.createElement('button');
-⦁	                uploadPdfBtn.className = 'upload-pdf-btn';
-⦁	                uploadPdfBtn.innerHTML = '<i class="fas fa-file-pdf"> PDF';
-⦁	                uploadPdfBtn.addEventListener('click', () => openPdfModal(subject.id, subject.name));
-⦁	 
-⦁	                subjectActions.appendChild(addChapterBtn);
-⦁	                subjectActions.appendChild(uploadPdfBtn);
-⦁	 
-⦁	                subjectHeader.appendChild(subjectTitle);
-⦁	                subjectHeader.appendChild(subjectActions);
-⦁	                subjectElement.appendChild(subjectHeader);
-⦁	 
-⦁	                // Display PDF list if available
-⦁	                if (subject.pdfs && subject.pdfs.length > 0) {
-⦁	                    const pdfContainer = document.createElement('div');
-⦁	                    pdfContainer.className = 'pdf-list';
-⦁	                    pdfContainer.style.marginBottom = '15px';
-⦁	 
-⦁	                    subject.pdfs.forEach((pdf, index) => {
-⦁	                        const pdfItem = document.createElement('div');
-⦁	                        pdfItem.className = 'pdf-item';
-⦁	 
-⦁	                        const pdfLink = document.createElement('a');
-⦁	                        pdfLink.href = pdf.url;
-⦁	                        pdfLink.target = '_blank';
-⦁	                        pdfLink.textContent = pdf.name;
-⦁	 
-⦁	                        const deletePdf = document.createElement('span');
-⦁	                        deletePdf.className = 'delete-pdf';
-⦁	                        deletePdf.innerHTML = '<i class="fas fa-trash">';
-⦁	                        deletePdf.addEventListener('click', (e) => {
-⦁	                            e.preventDefault();
-⦁	                            deletePdfFile(subject.id, index);
-⦁	                        });
-⦁	 
-⦁	                        pdfItem.appendChild(pdfLink);
-⦁	                        pdfItem.appendChild(deletePdf);
-⦁	                        pdfContainer.appendChild(pdfItem);
-⦁	                    });
-⦁	 
-⦁	                    subjectElement.appendChild(pdfContainer);
-⦁	                }
-⦁	 
-⦁	                // Create chapters
-⦁	                subject.chapters.forEach(chapter => {
-⦁	                    totalTime += chapter.timeSpent || 0;
-⦁	 
-⦁	                    const chapterElement = document.createElement('div');
-⦁	                    chapterElement.className = 'chapter';
-⦁	                    chapterElement.dataset.id = `${subject.id}-${chapter.id}`;
-⦁	 
-⦁	                    const chapterHeader = document.createElement('div');
-⦁	                    chapterHeader.className = 'chapter-header';
-⦁	 
-⦁	                    const chapterTitle = document.createElement('h3');
-⦁	                    chapterTitle.className = 'chapter-title';
-⦁	                    chapterTitle.textContent = chapter.name;
-⦁	 
-⦁	                    const chapterActions = document.createElement('div');
-⦁	                    chapterActions.style.display = 'flex';
-⦁	                    chapterActions.style.gap = '5px';
-⦁	 
-⦁	                    const notesBtn = document.createElement('button');
-⦁	                    notesBtn.className = 'notes-btn';
-⦁	                    notesBtn.innerHTML = '<i class="fas fa-sticky-note">';
-⦁	                    notesBtn.title = 'Add notes';
-⦁	                    notesBtn.addEventListener('click', () => openNotesModal(subject.id, chapter.id, chapter.name));
-⦁	 
-⦁	                    const timerBtn = document.createElement('button');
-⦁	                    timerBtn.className = 'notes-btn';
-⦁	                    timerBtn.innerHTML = '<i class="fas fa-clock">';
-⦁	                    timerBtn.title = 'Start timer';
-⦁	                    timerBtn.addEventListener('click', () => toggleTimer(subject.id, chapter.id));
-⦁	 
-⦁	                    chapterActions.appendChild(notesBtn);
-⦁	                    chapterActions.appendChild(timerBtn);
-⦁	 
-⦁	                    chapterHeader.appendChild(chapterTitle);
-⦁	                    chapterHeader.appendChild(chapterActions);
-⦁	                    chapterElement.appendChild(chapterHeader);
-⦁	 
-⦁	                    // Add time spent display
-⦁	                    if (chapter.timeSpent > 0) {
-⦁	                        const timeDisplay = document.createElement('div');
-⦁	                        timeDisplay.className = 'chapter-time';
-⦁	                        timeDisplay.textContent = `Time spent: ${formatTime(chapter.timeSpent)}`;
-⦁	                        chapterElement.appendChild(timeDisplay);
-⦁	                    }
-⦁	 
-⦁	                    // Create chapter parts
-⦁	                    const partsContainer = document.createElement('div');
-⦁	                    partsContainer.className = 'chapter-parts';
-⦁	 
-⦁	                    // Basics part
-⦁	                    const basicsPart = document.createElement('div');
-⦁	                    basicsPart.className = 'part';
-⦁	 
-⦁	                    const basicsTitle = document.createElement('span');
-⦁	                    basicsTitle.className = 'part-title';
-⦁	                    basicsTitle.textContent = 'Basics (Book & Notes)';
-⦁	 
-⦁	                    const basicsProgress = document.createElement('div');
-⦁	                    basicsProgress.className = 'circle-progress';
-⦁	                    basicsProgress.style.background = `conic-gradient(var(--success) ${chapter.parts.basics \* 36}deg, #e9ecef 0deg)`;
-⦁	                    basicsProgress.dataset.type = 'basics';
-⦁	                    basicsProgress.dataset.value = chapter.parts.basics;
-⦁	                    basicsProgress.addEventListener('click', () => {
-⦁	                        let newValue = (parseInt(basicsProgress.dataset.value) + 1) % 11;
-⦁	                        basicsProgress.dataset.value = newValue;
-⦁	                        basicsProgress.style.background = `conic-gradient(var(--success) ${newValue \* 36}deg, #e9ecef 0deg)`;
-⦁	                        updateProgress();
-⦁	                    });
-⦁	 
-⦁	                    basicsPart.appendChild(basicsTitle);
-⦁	                    basicsPart.appendChild(basicsProgress);
-⦁	                    partsContainer.appendChild(basicsPart);
-⦁	 
-⦁	                    // Practice part
-⦁	                    const practicePart = document.createElement('div');
-⦁	                    practicePart.className = 'part';
-⦁	 
-⦁	                    const practiceTitle = document.createElement('span');
-⦁	                    practiceTitle.className = 'part-title';
-⦁	                    practiceTitle.textContent = 'Master QB Practice';
-⦁	 
-⦁	                    const practiceProgress = document.createElement('div');
-⦁	                    practiceProgress.className = 'circle-progress';
-⦁	                    practiceProgress.style.background = `conic-gradient(var(--success) ${chapter.parts.practice \* 36}deg, #e9ecef 0deg)`;
-⦁	                    practiceProgress.dataset.type = 'practice';
-⦁	                    practiceProgress.dataset.value = chapter.parts.practice;
-⦁	                    practiceProgress.addEventListener('click', () => {
-⦁	                        let newValue = (parseInt(practiceProgress.dataset.value) + 1) % 11;
-⦁	                        practiceProgress.dataset.value = newValue;
-⦁	                        practiceProgress.style.background = `conic-gradient(var(--success) ${newValue \* 36}deg, #e9ecef 0deg)`;
-⦁	                        updateProgress();
-⦁	                    });
-⦁	 
-⦁	                    practicePart.appendChild(practiceTitle);
-⦁	                    practicePart.appendChild(practiceProgress);
-⦁	                    partsContainer.appendChild(practicePart);
-⦁	 
-⦁	                    // Exam mark part
-⦁	                    const examPart = document.createElement('div');
-⦁	                    examPart.className = 'part';
-⦁	 
-⦁	                    const examTitle = document.createElement('span');
-⦁	                    examTitle.className = 'part-title';
-⦁	                    examTitle.textContent = 'Exam Mark';
-⦁	 
-⦁	                    const examInput = document.createElement('input');
-⦁	                    examInput.type = 'text';
-⦁	                    examInput.className = 'mark-input';
-⦁	                    examInput.placeholder = '0';
-⦁	                    examInput.value = chapter.parts.mark;
-⦁	                    examInput.addEventListener('change', updateProgress);
-⦁	 
-⦁	                    examPart.appendChild(examTitle);
-⦁	                    examPart.appendChild(examInput);
-⦁	                    partsContainer.appendChild(examPart);
-⦁	 
-⦁	                    chapterElement.appendChild(partsContainer);
-⦁	                    subjectElement.appendChild(chapterElement);
-⦁	 
-⦁	                    // Update counts
-⦁	                    totalParts += 2; // Basics and Practice
-⦁	                    completedParts += parseInt(basicsProgress.dataset.value) + parseInt(practiceProgress.dataset.value);
-⦁	                });
-⦁	 
-⦁	                container.appendChild(subjectElement);
-⦁	            });
-⦁	 
-⦁	            // Update total time display
-⦁	            document.getElementById('total-time').textContent = formatTime(totalTime);
-⦁	 
-⦁	            // Add the "Add Subject" button
-⦁	            const addSubjectBtn = document.createElement('div');
-⦁	            addSubjectBtn.className = 'add-subject-btn';
-⦁	            addSubjectBtn.id = 'add-subject-btn';
-⦁	            addSubjectBtn.innerHTML = '<div class="add-icon"><i class="fas fa-plus-circle"></div>';
-⦁	            container.appendChild(addSubjectBtn);
-⦁	 
-⦁	            // Update overall progress
-⦁	            updateProgressDisplays(totalParts, completedParts);
-⦁	 
-⦁	            // Update analytics chart
-⦁	            updateProgressChart();
-⦁	 
-⦁	            // Update collaborators list
-⦁	            updateCollaboratorsList();
-⦁	        }
-⦁	
-⦁	        // Function to update progress displays
-⦁	        function updateProgressDisplays(total, completed) {
-⦁	            const percentage = total > 0 ? Math.round((completed / (total * 10)) * 100) : 0;
-⦁	 
-⦁	            document.getElementById('progress-percentage').textContent = `${percentage}%`;
-⦁	            document.getElementById('completed-count').textContent = completed;
-⦁	            document.getElementById('total-count').textContent = total * 10;
-⦁	 
-⦁	            document.querySelector('.progress-fill').style.width = `${percentage}%`;
-⦁	        }
-⦁	
-⦁	        // Function to update progress (to be called when any progress element changes)
-⦁	        function updateProgress() {
-⦁	            let totalParts = 0;
-⦁	            let completedParts = 0;
-⦁	 
-⦁	            document.querySelectorAll('.chapter').forEach(chapter => {
-⦁	                const basicsProgress = chapter.querySelector('[data-type="basics"]');
-⦁	                const practiceProgress = chapter.querySelector('[data-type="practice"]');
-⦁	 
-⦁	                if (basicsProgress) {
-⦁	                    completedParts += parseInt(basicsProgress.dataset.value);
-⦁	                    totalParts += 10;
-⦁	                }
-⦁	 
-⦁	                if (practiceProgress) {
-⦁	                    completedParts += parseInt(practiceProgress.dataset.value);
-⦁	                    totalParts += 10;
-⦁	                }
-⦁	            });
-⦁	 
-⦁	            updateProgressDisplays(totalParts/10, completedParts);
-⦁	        }
-⦁	
-⦁	        // Function to save progress to localStorage
-⦁	        function saveProgress() {
-⦁	            const progress = {};
-⦁	 
-⦁	            document.querySelectorAll('.chapter').forEach(chapter => {
-⦁	                const chapterId = chapter.dataset.id;
-⦁	                const basicsProgress = chapter.querySelector('[data-type="basics"]');
-⦁	                const practiceProgress = chapter.querySelector('[data-type="practice"]');
-⦁	                const markInput = chapter.querySelector('.mark-input');
-⦁	 
-⦁	                progress[chapterId] = {
-⦁	                    basics: basicsProgress ? parseInt(basicsProgress.dataset.value) : 0,
-⦁	                    practice: practiceProgress ? parseInt(practiceProgress.dataset.value) : 0,
-⦁	                    mark: markInput ? markInput.value : ""
-⦁	                };
-⦁	            });
-⦁	 
-⦁	            localStorage.setItem('syllabusProgress', JSON.stringify(progress));
-⦁	            localStorage.setItem('syllabusData', JSON.stringify(syllabusData));
-⦁	            localStorage.setItem('studySessions', JSON.stringify(studySessions));
-⦁	            localStorage.setItem('collaborators', JSON.stringify(collaborators));
-⦁	 
-⦁	            // Show confirmation with Toastify
-⦁	            Toastify({
-⦁	                text: "Progress saved successfully!",
-⦁	                duration: 3000,
-⦁	                gravity: "bottom",
-⦁	                position: "right",
-⦁	                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-⦁	            }).showToast();
-⦁	        }
-⦁	
-⦁	        // Function to reset all progress
-⦁	        function resetProgress() {
-⦁	            if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
-⦁	                localStorage.removeItem('syllabusProgress');
-⦁	                syllabusData.forEach(subject => {
-⦁	                    subject.chapters.forEach(chapter => {
-⦁	                        chapter.parts = { basics: 0, practice: 0, mark: "" };
-⦁	                        chapter.timeSpent = 0;
-⦁	                    });
-⦁	                });
-⦁	                studySessions = [];
-⦁	                renderSyllabus({});
-⦁	 
-⦁	                Toastify({
-⦁	                    text: "All progress has been reset",
-⦁	                    duration: 3000,
-⦁	                    gravity: "bottom",
-⦁	                    position: "right",
-⦁	                    backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
-⦁	                }).showToast();
-⦁	            }
-⦁	        }
-⦁	
-⦁	        // Function to add a new chapter
-⦁	        function addNewChapter(subjectId) {
-⦁	            const chapterName = prompt('Enter the name of the new chapter:');
-⦁	            if (chapterName) {
-⦁	                const subject = syllabusData.find(s => s.id === subjectId);
-⦁	                if (subject) {
-⦁	                    const newChapterId = chapterName.toLowerCase().replace(/\s+/g, '-');
-⦁	                    subject.chapters.push({
-⦁	                        id: newChapterId,
-⦁	                        name: chapterName,
-⦁	                        parts: { basics: 0, practice: 0, mark: "" },
-⦁	                        notes: "",
-⦁	                        timeSpent: 0
-⦁	                    });
-⦁	 
-⦁	                    // Save the updated syllabus structure
-⦁	                    localStorage.setItem('syllabusData', JSON.stringify(syllabusData));
-⦁	 
-⦁	                    // Re-render the syllabus
-⦁	                    renderSyllabus(JSON.parse(localStorage.getItem('syllabusProgress')) || {});
-⦁	 
-⦁	                    Toastify({
-⦁	                        text: "Chapter added successfully!",
-⦁	                        duration: 3000,
-⦁	                        gravity: "bottom",
-⦁	                        position: "right",
-⦁	                        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-⦁	                    }).showToast();
-⦁	                }
-⦁	            }
-⦁	        }
-⦁	
-⦁	        // Function to add a new subject
-⦁	        function addNewSubject() {
-⦁	            const subjectName = prompt('Enter the name of the new subject:');
-⦁	            if (subjectName) {
-⦁	                const newSubjectId = subjectName.toLowerCase().replace(/\s+/g, '-');
-⦁	                const colors = ['physics', 'chemistry', 'math', 'biology'];
-⦁	                const randomColor = colors[Math.floor(Math.random() * colors.length)];
-⦁	 
-⦁	                syllabusData.push({
-⦁	                    id: newSubjectId,
-⦁	                    name: subjectName,
-⦁	                    color: randomColor,
-⦁	                    pdfs: [],
-⦁	                    chapters: []
-⦁	                });
-⦁	 
-⦁	                // Save the updated syllabus structure
-⦁	                    localStorage.setItem('syllabusData', JSON.stringify(syllabusData));
-⦁	 
-⦁	                // Re-render the syllabus
-⦁	                renderSyllabus(JSON.parse(localStorage.getItem('syllabusProgress')) || {});
-⦁	 
-⦁	                Toastify({
-⦁	                    text: "Subject added successfully!",
-⦁	                    duration: 3000,
-⦁	                    gravity: "bottom",
-⦁	                    position: "right",
-⦁	                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-⦁	                }).showToast();
-⦁	            }
-⦁	        }
-⦁	
-⦁	        // Function to set a random motivational quote
-⦁	        function setRandomQuote() {
-⦁	            const randomIndex = Math.floor(Math.random() * motivationalQuotes.length);
-⦁	            const quote = motivationalQuotes[randomIndex];
-⦁	 
-⦁	            document.getElementById('motivational-quote').textContent = `"${quote.text}"`;
-⦁	            document.querySelector('.quote-author').textContent = `- ${quote.author}`;
-⦁	        }
-⦁	
-⦁	        // Function to apply theme
-⦁	        function applyTheme(themeId) {
-⦁	            switch(themeId) {
-⦁	                case 'theme-light':
-⦁	                    document.body.style.setProperty('--background-color', '#f5f7fb');
-⦁	                    document.body.style.setProperty('--background-image', 'none');
-⦁	                    localStorage.removeItem('customBackground');
-⦁	                    break;
-⦁	                case 'theme-dark':
-⦁	                    document.body.style.setProperty('--background-color', '#212529');
-⦁	                    document.body.style.setProperty('--background-image', 'none');
-⦁	                    localStorage.removeItem('customBackground');
-⦁	                    break;
-⦁	                case 'theme-blue':
-⦁	                    document.body.style.setProperty('--background-color', '#4361ee');
-⦁	                    document.body.style.setProperty('--background-image', 'none');
-⦁	                    localStorage.removeItem('customBackground');
-⦁	                    break;
-⦁	                case 'theme-green':
-⦁	                    document.body.style.setProperty('--background-color', '#2ec4b6');
-⦁	                    document.body.style.setProperty('--background-image', 'none');
-⦁	                    localStorage.removeItem('customBackground');
-⦁	                    break;
-⦁	            }
-⦁	        }
-⦁	
-⦁	        // Function to apply custom background
-⦁	        function applyCustomBackground() {
-⦁	            const fileInput = document.getElementById('bg-upload');
-⦁	            if (fileInput.files.length > 0) {
-⦁	                const file = fileInput.files[0];
-⦁	                const reader = new FileReader();
-⦁	 
-⦁	                reader.onload = function(e) {
-⦁	                    const imageUrl = e.target.result;
-⦁	                    document.body.style.setProperty('--background-image', `url(${imageUrl})`);
-⦁	                    document.body.style.setProperty('--background-color', 'transparent');
-⦁	                    localStorage.setItem('customBackground', imageUrl);
-⦁	 
-⦁	                    // Set custom theme button as active
-⦁	                    document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
-⦁	                    document.getElementById('theme-custom').classList.add('active');
-⦁	 
-⦁	                    Toastify({
-⦁	                        text: "Background updated successfully!",
-⦁	                        duration: 3000,
-⦁	                        gravity: "bottom",
-⦁	                        position: "right",
-⦁	                        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-⦁	                    }).showToast();
-⦁	                };
-⦁	 
-⦁	                reader.readAsDataURL(file);
-⦁	            }
-⦁	        }
-⦁	
-⦁	        // Function to reset background
-⦁	        function resetBackground() {
-⦁	            document.body.style.setProperty('--background-image', 'none');
-⦁	            document.body.style.setProperty('--background-color', '#f5f7fb');
-⦁	            localStorage.removeItem('customBackground');
-⦁	 
-⦁	            // Set light theme as active
-⦁	            document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
-⦁	            document.getElementById('theme-light').classList.add('active');
-⦁	 
-⦁	            Toastify({
-⦁	                text: "Background reset to default",
-⦁	                duration: 3000,
-⦁	                gravity: "bottom",
-⦁	                position: "right",
-⦁	                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-⦁	            }).showToast();
-⦁	        }
-⦁	
-⦁	        // Function to open PDF modal
-⦁	        function openPdfModal(subjectId, subjectName) {
-⦁	            document.getElementById('pdf-subject-name').textContent = subjectName;
-⦁	            const pdfList = document.getElementById('pdf-list');
-⦁	            pdfList.innerHTML = '';
-⦁	 
-⦁	            const subject = syllabusData.find(s => s.id === subjectId);
-⦁	            if (subject && subject.pdfs.length > 0) {
-⦁	                subject.pdfs.forEach((pdf, index) => {
-⦁	                    const pdfItem = document.createElement('div');
-⦁	                    pdfItem.className = 'pdf-item';
-⦁	 
-⦁	                    const pdfLink = document.createElement('a');
-⦁	                    pdfLink.href = pdf.url;
-⦁	                    pdfLink.target = '_blank';
-⦁	                    pdfLink.textContent = pdf.name;
-⦁	 
-⦁	                    const deletePdf = document.createElement('span');
-⦁	                    deletePdf.className = 'delete-pdf';
-⦁	                    deletePdf.innerHTML = '<i class="fas fa-trash">';
-⦁	                    deletePdf.addEventListener('click', (e) => {
-⦁	                        e.preventDefault();
-⦁	                        deletePdfFile(subjectId, index);
-⦁	                        openPdfModal(subjectId, subjectName); // Refresh the list
-⦁	                    });
-⦁	 
-⦁	                    pdfItem.appendChild(pdfLink);
-⦁	                    pdfItem.appendChild(deletePdf);
-⦁	                    pdfList.appendChild(pdfItem);
-⦁	                });
-⦁	            } else {
-⦁	                pdfList.innerHTML = '<p>No PDFs uploaded yet.</p>';
-⦁	            }
-⦁	 
-⦁	            // Set current subject id on the upload input
-⦁	            document.getElementById('pdf-upload').dataset.subjectId = subjectId;
-⦁	            document.getElementById('pdf-modal').style.display = 'flex';
-⦁	        }
-⦁	
-⦁	        // Function to handle PDF upload
-⦁	        function handlePdfUpload(event) {
-⦁	            const file = event.target.files[0];
-⦁	            if (file && file.type === 'application/pdf') {
-⦁	                const subjectId = event.target.dataset.subjectId;
-⦁	                const subject = syllabusData.find(s => s.id === subjectId);
-⦁	 
-⦁	                if (subject) {
-⦁	                    const reader = new FileReader();
-⦁	                    reader.onload = function(e) {
-⦁	                        const pdfData = {
-⦁	                            name: file.name,
-⦁	                            url: e.target.result
-⦁	                        };
-⦁	 
-⦁	                        if (!subject.pdfs) {
-⦁	                            subject.pdfs = [];
-⦁	                        }
-⦁	 
-⦁	                        subject.pdfs.push(pdfData);
-⦁	                        localStorage.setItem('syllabusData', JSON.stringify(syllabusData));
-⦁	 
-⦁	                        // Refresh the PDF list
-⦁	                        openPdfModal(subjectId, subject.name);
-⦁	 
-⦁	                        // Re-render the syllabus to show the new PDF
-⦁	                        renderSyllabus(JSON.parse(localStorage.getItem('syllabusProgress')) || {});
-⦁	 
-⦁	                        Toastify({
-⦁	                            text: "PDF uploaded successfully!",
-⦁	                            duration: 3000,
-⦁	                            gravity: "bottom",
-⦁	                            position: "right",
-⦁	                            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-⦁	                        }).showToast();
-⦁	                    };
-⦁	 
-⦁	                    reader.readAsDataURL(file);
-⦁	                }
-⦁	            } else {
-⦁	                Toastify({
-⦁	                    text: "Please select a valid PDF file.",
-⦁	                    duration: 3000,
-⦁	                    gravity: "bottom",
-⦁	                    position: "right",
-⦁	                    backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
-⦁	                }).showToast();
-⦁	            }
-⦁	        }
-⦁	
-⦁	        // Function to delete PDF file
-⦁	        function deletePdfFile(subjectId, index) {
-⦁	            const subject = syllabusData.find(s => s.id === subjectId);
-⦁	            if (subject && subject.pdfs) {
-⦁	                subject.pdfs.splice(index, 1);
-⦁	                localStorage.setItem('syllabusData', JSON.stringify(syllabusData));
-⦁	 
-⦁	                // Re-render the syllabus
-⦁	                renderSyllabus(JSON.parse(localStorage.getItem('syllabusProgress')) || {});
-⦁	 
-⦁	                Toastify({
-⦁	                    text: "PDF deleted successfully!",
-⦁	                    duration: 3000,
-⦁	                    gravity: "bottom",
-⦁	                    position: "right",
-⦁	                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-⦁	                }).showToast();
-⦁	            }
-⦁	        }
-⦁	
-⦁	        // Function to open notes modal
-⦁	        function openNotesModal(subjectId, chapterId, chapterName) {
-⦁	            document.getElementById('notes-chapter-name').textContent = chapterName;
-⦁	 
-⦁	            const subject = syllabusData.find(s => s.id === subjectId);
-⦁	            if (subject) {
-⦁	                const chapter = subject.chapters.find(c => c.id === chapterId);
-⦁	                if (chapter) {
-⦁	                    document.getElementById('notes-text').value = chapter.notes || '';
-⦁	                    document.getElementById('notes-modal').dataset.subjectId = subjectId;
-⦁	                    document.getElementById('notes-modal').dataset.chapterId = chapterId;
-⦁	                    document.getElementById('notes-modal').style.display = 'flex';
-⦁	                }
-⦁	            }
-⦁	        }
-⦁	
-⦁	        // Function to save notes
-⦁	        function saveNotes() {
-⦁	            const subjectId = document.getElementById('notes-modal').dataset.subjectId;
-⦁	            const chapterId = document.getElementById('notes-modal').dataset.chapterId;
-⦁	            const notesText = document.getElementById('notes-text').value;
-⦁	 
-⦁	            const subject = syllabusData.find(s => s.id === subjectId);
-⦁	            if (subject) {
-⦁	                const chapter = subject.chapters.find(c => c.id === chapterId);
-⦁	                if (chapter) {
-⦁	                    chapter.notes = notesText;
-⦁	                    localStorage.setItem('syllabusData', JSON.stringify(syllabusData));
-⦁	 
-⦁	                    document.getElementById('notes-modal').style.display = 'none';
-⦁	 
-⦁	                    Toastify({
-⦁	                        text: "Notes saved successfully!",
-⦁	                        duration: 3000,
-⦁	                        gravity: "bottom",
-⦁	                        position: "right",
-⦁	                        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-⦁	                    }).showToast();
-⦁	                }
-⦁	            }
-⦁	        }
-⦁	
-⦁	        // Function to toggle timer for a chapter
-⦁	        function toggleTimer(subjectId, chapterId) {
-⦁	            const timerKey = `${subjectId}-${chapterId}`;
-⦁	 
-⦁	            if (timers[timerKey]) {
-⦁	                // Stop the timer
-⦁	                clearInterval(timers[timerKey]);
-⦁	                delete timers[timerKey];
-⦁	 
-⦁	                Toastify({
-⦁	                    text: "Timer stopped",
-⦁	                    duration: 3000,
-⦁	                    gravity: "bottom",
-⦁	                    position: "right",
-⦁	                    backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
-⦁	                }).showToast();
-⦁	            } else {
-⦁	                // Start the timer
-⦁	                const startTime = Date.now();
-⦁	 
-⦁	                timers[timerKey] = setInterval(() => {
-⦁	                    const subject = syllabusData.find(s => s.id === subjectId);
-⦁	                    if (subject) {
-⦁	                        const chapter = subject.chapters.find(c => c.id === chapterId);
-⦁	                        if (chapter) {
-⦁	                            const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
-⦁	                            chapter.timeSpent = (chapter.timeSpent || 0) + 1;
-⦁	 
-⦁	                            // Update the UI every minute
-⦁	                            if (elapsedSeconds % 60 === 0) {
-⦁	                                renderSyllabus(JSON.parse(localStorage.getItem('syllabusProgress')) || {});
-⦁	                            }
-⦁	                        }
-⦁	                    }
-⦁	                }, 1000);
-⦁	 
-⦁	                Toastify({
-⦁	                    text: "Timer started - studying time is being tracked",
-⦁	                    duration: 3000,
-⦁	                    gravity: "bottom",
-⦁	                    position: "right",
-⦁	                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-⦁	                }).showToast();
-⦁	            }
-⦁	        }
-⦁	
-⦁	        // Function to format time
-⦁	        function formatTime(seconds) {
-⦁	            const hours = Math.floor(seconds / 3600);
-⦁	            const minutes = Math.floor((seconds % 3600) / 60);
-⦁	            return `${hours}h ${minutes}m`;
-⦁	        }
-⦁	
-⦁	        // Function to set reminder
-⦁	        function setReminder() {
-⦁	            const reminderTime = document.getElementById('reminder-time').value;
-⦁	            const reminderMessage = document.getElementById('reminder-message').value || 'Study reminder';
-⦁	 
-⦁	            if (!reminderTime) {
-⦁	                Toastify({
-⦁	                    text: "Please select a time for the reminder",
-⦁	                    duration: 3000,
-⦁	                    gravity: "bottom",
-⦁	                    position: "right",
-⦁	                    backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
-⦁	                }).showToast();
-⦁	                return;
-⦁	            }
-⦁	 
-⦁	            const now = new Date();
-⦁	            const selectedTime = new Date(reminderTime);
-⦁	 
-⦁	            if (selectedTime <= now) {
-⦁	                Toastify({
-⦁	                    text: "Please select a future time for the reminder",
-⦁	                    duration: 3000,
-⦁	                    gravity: "bottom",
-⦁	                    position: "right",
-⦁	                    backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
-⦁	                }).showToast();
-⦁	                return;
-⦁	            }
-⦁	 
-⦁	            const timeUntilReminder = selectedTime.getTime() - now.getTime();
-⦁	 
-⦁	            setTimeout(() => {
-⦁	                // Show browser notification if permission granted
-⦁	                if (Notification.permission === 'granted') {
-⦁	                    new Notification('StudyFlow Reminder', {
-⦁	                        body: reminderMessage,
-⦁	                        icon: 'https://example.com/icon.png' // Replace with your icon URL
-⦁	                    });
-⦁	                }
-⦁	 
-⦁	                // Show toast notification
-⦁	                Toastify({
-⦁	                    text: reminderMessage,
-⦁	                    duration: 10000,
-⦁	                    gravity: "top",
-⦁	                    position: "center",
-⦁	                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-⦁	                }).showToast();
-⦁	            }, timeUntilReminder);
-⦁	 
-⦁	            document.getElementById('reminder-modal').style.display = 'none';
-⦁	 
-⦁	            Toastify({
-⦁	                text: "Reminder set successfully!",
-⦁	                duration: 3000,
-⦁	                gravity: "bottom",
-⦁	                position: "right",
-⦁	                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-⦁	            }).showToast();
-⦁	        }
-⦁	
-⦁	        // Function to request notification permission
-⦁	        function requestNotificationPermission() {
-⦁	            if ('Notification' in window) {
-⦁	                Notification.requestPermission().then(permission => {
-⦁	                    if (permission === 'granted') {
-⦁	                        Toastify({
-⦁	                            text: "Notifications enabled!",
-⦁	                            duration: 3000,
-⦁	                            gravity: "bottom",
-⦁	                            position: "right",
-⦁	                            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-⦁	                        }).showToast();
-⦁	                    }
-⦁	                });
-⦁	            } else {
-⦁	                Toastify({
-⦁	                    text: "This browser does not support notifications",
-⦁	                    duration: 3000,
-⦁	                    gravity: "bottom",
-⦁	                    position: "right",
-⦁	                    backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
-⦁	                }).showToast();
-⦁	            }
-⦁	        }
-⦁	
-⦁	        // Function to simulate authentication
-⦁	        function simulateAuth(provider) {
-⦁	            // In a real app, this would integrate with Firebase Auth or similar
-⦁	            const randomName = provider === 'Google' ? 'Google User' : 'GitHub User';
-⦁	            const randomEmail = provider === 'Google' ? 'user@gmail.com' : 'user@github.com';
-⦁	 
-⦁	            currentUser = {
-⦁	                name: randomName,
-⦁	                email: randomEmail,
-⦁	                avatar: provider.charAt(0)
-⦁	            };
-⦁	 
-⦁	            localStorage.setItem('userData', JSON.stringify(currentUser));
-⦁	            showUserInfo();
-⦁	 
-⦁	            Toastify({
-⦁	                text: `Signed in with ${provider} successfully!`,
-⦁	                duration: 3000,
-⦁	                gravity: "bottom",
-⦁	                position: "right",
-⦁	                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-⦁	            }).showToast();
-⦁	        }
-⦁	
-⦁	        // Function to show user info
-⦁	        function showUserInfo() {
-⦁	            document.getElementById('auth-buttons').style.display = 'none';
-⦁	            document.getElementById('user-info').style.display = 'flex';
-⦁	            document.getElementById('user-name').textContent = currentUser.name;
-⦁	            document.getElementById('user-avatar').textContent = currentUser.avatar;
-⦁	        }
-⦁	
-⦁	        // Function to sign out
-⦁	        function signOut() {
-⦁	            currentUser = null;
-⦁	            localStorage.removeItem('userData');
-⦁	 
-⦁	            document.getElementById('auth-buttons').style.display = 'flex';
-⦁	            document.getElementById('user-info').style.display = 'none';
-⦁	 
-⦁	            Toastify({
-⦁	                text: "Signed out successfully",
-⦁	                duration: 3000,
-⦁	                gravity: "bottom",
-⦁	                position: "right",
-⦁	                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-⦁	            }).showToast();
-⦁	        }
-⦁	
-⦁	        // Function to initialize tabs
-⦁	        function initTabs() {
-⦁	            const tabs = document.querySelectorAll('.tab');
-⦁	            const tabContents = document.querySelectorAll('.tab-content');
-⦁	 
-⦁	            tabs.forEach(tab => {
-⦁	                tab.addEventListener('click', () => {
-⦁	                    const tabId = tab.getAttribute('data-tab');
-⦁	 
-⦁	                    // Update active tab
-⦁	                    tabs.forEach(t => t.classList.remove('active'));
-⦁	                    tab.classList.add('active');
-⦁	 
-⦁	                    // Show active tab content
-⦁	                    tabContents.forEach(content => {
-⦁	                        content.classList.remove('active');
-⦁	                        if (content.id === `${tabId}-tab`) {
-⦁	                            content.classList.add('active');
-⦁	                        }
-⦁	                    });
-⦁	 
-⦁	                    // If analytics tab is selected, update the chart
-⦁	                    if (tabId === 'analytics') {
-⦁	                        updateProgressChart();
-⦁	                    }
-⦁	 
-⦁	                    // If collaboration tab is selected, update the user list
-⦁	                    if (tabId === 'collaboration') {
-⦁	                        updateCollaboratorsList();
-⦁	                    }
-⦁	                });
-⦁	            });
-⦁	        }
-⦁	
-⦁	        // Function to initialize progress chart
-⦁	        function initProgressChart() {
-⦁	            const ctx = document.getElementById('progress-chart').getContext('2d');
-⦁	            progressChart = new Chart(ctx, {
-⦁	                type: 'bar',
-⦁	                data: {
-⦁	                    labels: [],
-⦁	                    datasets: [{
-⦁	                        label: 'Completion %',
-⦁	                        data: [],
-⦁	                        backgroundColor: 'rgba(67, 97, 238, 0.7)',
-⦁	                        borderColor: 'rgba(67, 97, 238, 1)',
-⦁	                        borderWidth: 1
-⦁	                    }]
-⦁	                },
-⦁	                options: {
-⦁	                    responsive: true,
-⦁	                    maintainAspectRatio: false,
-⦁	                    scales: {
-⦁	                        y: {
-⦁	                            beginAtZero: true,
-⦁	                            max: 100
-⦁	                        }
-⦁	                    }
-⦁	                }
-⦁	            });
-⦁	        }
-⦁	
-⦁	        // Function to update progress chart
-⦁	        function updateProgressChart() {
-⦁	            if (!progressChart) return;
-⦁	 
-⦁	            const subjects = [];
-⦁	            const completionData = [];
-⦁	 
-⦁	            syllabusData.forEach(subject => {
-⦁	                let totalParts = 0;
-⦁	                let completedParts = 0;
-⦁	 
-⦁	                subject.chapters.forEach(chapter => {
-⦁	                    totalParts += 2; // Basics and Practice
-⦁	                    completedParts += chapter.parts.basics + chapter.parts.practice;
-⦁	                });
-⦁	 
-⦁	                const completionPercentage = totalParts > 0 ? Math.round((completedParts / (totalParts * 10)) * 100) : 0;
-⦁	 
-⦁	                subjects.push(subject.name);
-⦁	                completionData.push(completionPercentage);
-⦁	            });
-⦁	 
-⦁	            progressChart.data.labels = subjects;
-⦁	            progressChart.data.datasets[0].data = completionData;
-⦁	            progressChart.update();
-⦁	        }
-⦁	
-⦁	        // Function to initialize calendar
-⦁	        function initCalendar() {
-⦁	            const calendar = document.getElementById('study-calendar');
-⦁	            // This is a simplified implementation
-⦁	            // In a real app, you would use a library like FullCalendar
-⦁	 
-⦁	            // Display upcoming study sessions
-⦁	            updateCalendarDisplay();
-⦁	        }
-⦁	
-⦁	        // Function to update calendar display
-⦁	        function updateCalendarDisplay() {
-⦁	            const calendar = document.getElementById('study-calendar');
-⦁	 
-⦁	            if (studySessions.length === 0) {
-⦁	                calendar.innerHTML = '<p>No study sessions planned. Click "Add Session" to schedule one.</p>';
-⦁	            } else {
-⦁	                let html = '<ul>';
-⦁	                studySessions.forEach(session => {
-⦁	                    const date = new Date(session.date).toLocaleDateString();
-⦁	                    html += `<li>${date}: ${session.chapter} (${session.duration} minutes)</li>`;
-⦁	                });
-⦁	                html += '</ul>';
-⦁	                calendar.innerHTML = html;
-⦁	            }
-⦁	        }
-⦁	
-⦁	        // Function to add study session
-⦁	        function addStudySession() {
-⦁	            // In a real app, this would open a modal for selecting chapter, date, and duration
-⦁	            const subject = syllabusData[0]; // Default to first subject
-⦁	            const chapter = subject.chapters[0]; // Default to first chapter
-⦁	 
-⦁	            const session = {
-⦁	                subject: subject.name,
-⦁	                chapter: chapter.name,
-⦁	                date: new Date(Date.now() + 86400000).toISOString(), // Tomorrow
-⦁	                duration: 60 // 60 minutes
-⦁	            };
-⦁	 
-⦁	            studySessions.push(session);
-⦁	            localStorage.setItem('studySessions', JSON.stringify(studySessions));
-⦁	            updateCalendarDisplay();
-⦁	 
-⦁	            Toastify({
-⦁	                text: "Study session added to calendar!",
-⦁	                duration: 3000,
-⦁	                gravity: "bottom",
-⦁	                position: "right",
-⦁	                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-⦁	            }).showToast();
-⦁	        }
-⦁	
-⦁	        // Function to update collaborators list
-⦁	        function updateCollaboratorsList() {
-⦁	            const userList = document.getElementById('user-list');
-⦁	            userList.innerHTML = '';
-⦁	 
-⦁	            if (collaborators.length === 0) {
-⦁	                userList.innerHTML = '<p>No collaborators yet. Invite someone to join!</p>';
-⦁	            } else {
-⦁	                collaborators.forEach(user => {
-⦁	                    const userBadge = document.createElement('div');
-⦁	                    userBadge.className = 'user-badge';
-⦁	 
-⦁	                    const avatar = document.createElement('div');
-⦁	                    avatar.className = 'user-avatar-sm';
-⦁	                    avatar.textContent = user.name.charAt(0);
-⦁	 
-⦁	                    const name = document.createElement('span');
-⦁	                    name.textContent = user.name;
-⦁	 
-⦁	                    userBadge.appendChild(avatar);
-⦁	                    userBadge.appendChild(name);
-⦁	                    userList.appendChild(userBadge);
-⦁	                });
-⦁	            }
-⦁	        }
-⦁	
-⦁	        // Function to send invite
-⦁	        function sendInvite() {
-⦁	            const emailInput = document.getElementById('invite-email');
-⦁	            const email = emailInput.value.trim();
-⦁	 
-⦁	            if (!email) {
-⦁	                Toastify({
-⦁	                    text: "Please enter an email address",
-⦁	                    duration: 3000,
-⦁	                    gravity: "bottom",
-⦁	                    position: "right",
-⦁	                    backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
-⦁	                }).showToast();
-⦁	                return;
-⦁	            }
-⦁	 
-⦁	            // Simple email validation
-⦁	            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-⦁	            if (!emailRegex.test(email)) {
-⦁	                Toastify({
-⦁	                    text: "Please enter a valid email address",
-⦁	                    duration: 3000,
-⦁	                    gravity: "bottom",
-⦁	                    position: "right",
-⦁	                    backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
-⦁	                }).showToast();
-⦁	                return;
-⦁	            }
-⦁	 
-⦁	            // In a real app, this would send an actual invitation
-⦁	            // For this demo, we'll just add a mock user
-⦁	            collaborators.push({
-⦁	                name: email.split('@')[0],
-⦁	                email: email,
-⦁	                avatar: email.charAt(0).toUpperCase()
-⦁	            });
-⦁	 
-⦁	            localStorage.setItem('collaborators', JSON.stringify(collaborators));
-⦁	            updateCollaboratorsList();
-⦁	 
-⦁	            emailInput.value = '';
-⦁	 
-⦁	            Toastify({
-⦁	                text: `Invitation sent to ${email}!`,
-⦁	                duration: 3000,
-⦁	                gravity: "bottom",
-⦁	                position: "right",
-⦁	                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-⦁	            }).showToast();
-⦁	        }
-⦁	
-⦁	        // Function to export data
-⦁	        function exportData() {
-⦁	            const data = {
-⦁	                syllabusData: syllabusData,
-⦁	                progress: JSON.parse(localStorage.getItem('syllabusProgress') || '{}'),
-⦁	                customBackground: localStorage.getItem('customBackground'),
-⦁	                studySessions: studySessions,
-⦁	                collaborators: collaborators
-⦁	            };
-⦁	 
-⦁	            const dataStr = JSON.stringify(data);
-⦁	            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-⦁	 
-⦁	            const exportFileDefaultName = 'syllabus-tracker-data.json';
-⦁	 
-⦁	            const linkElement = document.createElement('a');
-⦁	            linkElement.setAttribute('href', dataUri);
-⦁	            linkElement.setAttribute('download', exportFileDefaultName);
-⦁	            linkElement.click();
-⦁	 
-⦁	            Toastify({
-⦁	                text: "Data exported successfully!",
-⦁	                duration: 3000,
-⦁	                gravity: "bottom",
-⦁	                position: "right",
-⦁	                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-⦁	            }).showToast();
-⦁	        }
-⦁	
-⦁	        // Function to import data
-⦁	        function importData(event) {
-⦁	            const file = event.target.files[0];
-⦁	            if (file) {
-⦁	                const reader = new FileReader();
-⦁	                reader.onload = function(e) {
-⦁	                    try {
-⦁	                        const data = JSON.parse(e.target.result);
-⦁	 
-⦁	                        // Import syllabus data
-⦁	                        if (data.syllabusData) {
-⦁	                            // Merge with existing data to preserve structure
-⦁	                            data.syllabusData.forEach((importedSubject, index) => {
-⦁	                                if (syllabusData[index]) {
-⦁	                                    syllabusData[index].pdfs = importedSubject.pdfs || [];
-⦁	                                    // Preserve any custom chapters added
-⦁	                                    if (importedSubject.chapters) {
-⦁	                                        syllabusData[index].chapters = importedSubject.chapters;
-⦁	                                    }
-⦁	                                }
-⦁	                            });
-⦁	                        }
-⦁	 
-⦁	                        // Import progress
-⦁	                        if (data.progress) {
-⦁	                            localStorage.setItem('syllabusProgress', JSON.stringify(data.progress));
-⦁	                        }
-⦁	 
-⦁	                        // Import custom background
-⦁	                        if (data.customBackground) {
-⦁	                            localStorage.setItem('customBackground', data.customBackground);
-⦁	                            document.body.style.setProperty('--background-image', `url(${data.customBackground})`);
-⦁	                            document.body.style.setProperty('--background-color', 'transparent');
-⦁	                        }
-⦁	 
-⦁	                        // Import study sessions
-⦁	                        if (data.studySessions) {
-⦁	                            studySessions = data.studySessions;
-⦁	                            localStorage.setItem('studySessions', JSON.stringify(studySessions));
-⦁	                        }
-⦁	 
-⦁	                        // Import collaborators
-⦁	                        if (data.collaborators) {
-⦁	                            collaborators = data.collaborators;
-⦁	                            localStorage.setItem('collaborators', JSON.stringify(collaborators));
-⦁	                        }
-⦁	 
-⦁	                        // Re-render the syllabus
-⦁	                        renderSyllabus(data.progress || {});
-⦁	 
-⦁	                        Toastify({
-⦁	                            text: "Data imported successfully!",
-⦁	                            duration: 3000,
-⦁	                            gravity: "bottom",
-⦁	                            position: "right",
-⦁	                            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-⦁	                        }).showToast();
-⦁	                    } catch (error) {
-⦁	                        Toastify({
-⦁	                            text: "Error importing data: Invalid file format.",
-⦁	                            duration: 3000,
-⦁	                            gravity: "bottom",
-⦁	                            position: "right",
-⦁	                            backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
-⦁	                        }).showToast();
-⦁	                        console.error(error);
-⦁	                    }
-⦁	                };
-⦁	                reader.readAsText(file);
-⦁	            }
-⦁	 
-⦁	            // Reset the file input
-⦁	            event.target.value = '';
-⦁	        }
-⦁	    </script>
-⦁	</body>
-⦁	</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyFlow - Advanced Syllabus Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --subject-bg: #f1f3f9;
+            --chapter-bg: #e9ecef;
+            --physics: #7209b7;
+            --chemistry: #f72585;
+            --math: #3a0ca3;
+            --biology: #4cc9f0;
+            --background-image: none;
+            --background-color: #f5f7fb;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background-color);
+            background-image: var(--background-image);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px;
+            transition: background-color 0.5s ease;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            backdrop-filter: blur(5px);
+            background-color: rgba(67, 97, 238, 0.85);
+        }
+        
+        .auth-section {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .auth-btn {
+            padding: 8px 15px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .auth-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .theme-selector {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .theme-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid white;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .theme-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .theme-btn.active {
+            transform: scale(1.15);
+            box-shadow: 0 0 5px white;
+        }
+        
+        #theme-light { background: linear-gradient(135deg, #f5f7fb, #e9ecef); }
+        #theme-dark { background: linear-gradient(135deg, #212529, #343a40); }
+        #theme-blue { background: linear-gradient(135deg, #4361ee, #3a0ca3); }
+        #theme-green { background: linear-gradient(135deg, #2ec4b6, #0a9396); }
+        #theme-custom { 
+            background: linear-gradient(135deg, #ff9e00, #ff006e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 992px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .progress-summary {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success), var(--primary));
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        
+        .calendar-section {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(5px);
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        #study-calendar {
+            width: 100%;
+            height: 200px;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        
+        .subjects-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .subject {
+            background-color: rgba(241, 243, 249, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            backdrop-filter: blur(5px);
+        }
+        
+        .subject-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .subject-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .subject.physics .subject-title { color: var(--physics); }
+        .subject.chemistry .subject-title { color: var(--chemistry); }
+        .subject.math .subject-title { color: var(--math); }
+        .subject.biology .subject-title { color: var(--biology); }
+        
+        .subject-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .add-chapter-btn, .upload-pdf-btn, .notes-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .add-chapter-btn:hover, .upload-pdf-btn:hover, .notes-btn:hover {
+            background-color: var(--secondary);
+        }
+        
+        .chapter {
+            background-color: var(--chapter-bg);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .chapter-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .chapter-title {
+            font-size: 1.2rem;
+            color: var(--dark);
+            font-weight: 500;
+        }
+        
+        .chapter-time {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+        
+        .chapter-parts {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .part {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .part-title {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .circle-progress {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: conic-gradient(var(--success) 0%, #e9ecef 0%);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .circle-progress:hover {
+            transform: scale(1.1);
+        }
+        
+        .circle-progress::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 5px;
+            left: 5px;
+        }
+        
+        .exam-mark {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .mark-input {
+            width: 60px;
+            padding: 5px;
+            border: 1px solid var(--gray);
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .add-subject-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            border: 2px dashed var(--primary);
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 200px;
+            backdrop-filter: blur(5px);
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .add-subject-btn:hover {
+            background-color: #f0f4ff;
+            transform: scale(1.02);
+        }
+        
+        .add-icon {
+            font-size: 3rem;
+            color: var(--primary);
+        }
+        
+        .quote-box {
+            background: linear-gradient(135deg, rgba(76, 201, 240, 0.85), rgba(67, 97, 238, 0.85));
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        
+        .quote-text {
+            font-size: 1.2rem;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+        
+        .quote-author {
+            font-weight: 500;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+            gap: 15px;
+        }
+        
+        button {
+            padding: 12px 25px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        .custom-theme-panel {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .color-picker {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .background-upload {
+            margin-top: 15px;
+        }
+        
+        .pdf-list {
+            margin-top: 15px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .pdf-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            margin-bottom: 5px;
+        }
+        
+        .pdf-item a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .pdf-item a:hover {
+            text-decoration: underline;
+        }
+        
+        .delete-pdf {
+            color: #dc3545;
+            cursor: pointer;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            max-width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal h3 {
+            margin-bottom: 15px;
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .notes-container {
+            margin-top: 15px;
+        }
+        
+        .notes-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: vertical;
+        }
+        
+        .time-tracker {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .time-display {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .tab-container {
+            margin-top: 20px;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 15px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .tab.active {
+            border-bottom: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .chart-container {
+            height: 300px;
+            margin-top: 20px;
+        }
+        
+        .collaboration-section {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            margin-top: 30px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .user-list {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        
+        .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            background-color: #e9ecef;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .user-avatar-sm {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .subjects-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .subject-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .subject-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .theme-selector {
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .auth-section {
+                position: static;
+                justify-content: center;
+                margin-top: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>StudyFlow - Syllabus Tracker</h1>
+            <p>Track your progress with detailed analytics and collaboration features</p>
+            
+            <div class="auth-section">
+                <div id="auth-buttons">
+                    <button class="auth-btn" id="google-signin"><i class="fab fa-google"></i> Sign in with Google</button>
+                    <button class="auth-btn" id="github-signin"><i class="fab fa-github"></i> Sign in with GitHub</button>
+                </div>
+                <div id="user-info" class="user-info" style="display: none;">
+                    <div class="user-avatar" id="user-avatar">U</div>
+                    <span id="user-name">User</span>
+                    <button class="auth-btn" id="sign-out">Sign Out</button>
+                </div>
+            </div>
+            
+            <div class="theme-selector">
+                <div class="theme-btn active" id="theme-light" title="Light Theme" aria-label="Light theme"></div>
+                <div class="theme-btn" id="theme-dark" title="Dark Theme" aria-label="Dark theme"></div>
+                <div class="theme-btn" id="theme-blue" title="Blue Theme" aria-label="Blue theme"></div>
+                <div class="theme-btn" id="theme-green" title="Green Theme" aria-label="Green theme"></div>
+                <div class="theme-btn" id="theme-custom" title="Custom Background" aria-label="Custom background">BG</div>
+            </div>
+        </header>
+        
+        <div class="dashboard">
+            <div class="progress-summary">
+                <h2>Overall Progress: <span id="progress-percentage">0%</span></h2>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+                <p>Completed: <span id="completed-count">0</span> out of <span id="total-count">0</span> topics</p>
+                <div class="time-tracker">
+                    <span>Total study time: </span>
+                    <span class="time-display" id="total-time">0h 0m</span>
+                </div>
+            </div>
+            
+            <div class="calendar-section">
+                <div class="calendar-header">
+                    <h3>Study Planner</h3>
+                    <button id="add-to-calendar"><i class="fas fa-plus"></i> Add Session</button>
+                </div>
+                <div id="study-calendar"></div>
+            </div>
+        </div>
+        
+        <div class="tab-container">
+            <div class="tabs">
+                <div class="tab active" data-tab="syllabus">Syllabus</div>
+                <div class="tab" data-tab="analytics">Analytics</div>
+                <div class="tab" data-tab="collaboration">Collaboration</div>
+            </div>
+            
+            <div class="tab-content active" id="syllabus-tab">
+                <div class="subjects-container" id="subjects-container">
+                    <!-- Subjects will be dynamically added here -->
+                </div>
+            </div>
+            
+            <div class="tab-content" id="analytics-tab">
+                <div class="progress-summary">
+                    <h3>Progress Analytics</h3>
+                    <div class="chart-container">
+                        <canvas id="progress-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="collaboration-tab">
+                <div class="collaboration-section">
+                    <h3>Collaborate with Classmates</h3>
+                    <p>Invite friends to track progress together</p>
+                    <div class="user-list" id="user-list">
+                        <!-- Collaborators will be listed here -->
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <input type="text" id="invite-email" placeholder="Enter email to invite" style="padding: 8px; width: 200px; border: 1px solid #ddd; border-radius: 4px;">
+                        <button id="send-invite" style="margin-left: 10px;">Send Invite</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="custom-theme-panel" id="custom-theme-panel">
+            <h3>Customize Background</h3>
+            <div class="background-upload">
+                <p>Upload your own background image:</p>
+                <input type="file" id="bg-upload" accept="image/*" style="margin: 10px 0;">
+                <button id="apply-bg">Apply Background</button>
+                <button id="reset-bg" style="background-color: #6c757d;">Reset to Default</button>
+            </div>
+        </div>
+        
+        <div class="quote-box">
+            <p class="quote-text" id="motivational-quote">"The journey of a thousand miles begins with a single step."</p>
+            <p class="quote-author">- Lao Tzu</p>
+        </div>
+        
+        <div class="controls">
+            <button id="save-btn">Save Progress</button>
+            <button id="reset-btn">Reset All</button>
+            <button id="export-btn">Export Data</button>
+            <button id="import-btn">Import Data</button>
+            <button id="reminder-btn">Set Reminder</button>
+            <button id="notifications-btn">Enable Notifications</button>
+        </div>
+        
+        <input type="file" id="import-file" accept=".json" style="display: none;">
+    </div>
+
+    <!-- Modal for PDF Upload -->
+    <div class="modal" id="pdf-modal">
+        <div class="modal-content">
+            <h3>Upload PDF for <span id="pdf-subject-name"></span></h3>
+            <input type="file" id="pdf-upload" accept=".pdf" style="margin: 10px 0; width: 100%;">
+            <div class="pdf-list" id="pdf-list">
+                <!-- PDF list will be populated here -->
+            </div>
+            <div class="modal-actions">
+                <button id="close-pdf-modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Notes -->
+    <div class="modal" id="notes-modal">
+        <div class="modal-content">
+            <h3>Notes for <span id="notes-chapter-name"></span></h3>
+            <div class="notes-container">
+                <textarea class="notes-textarea" id="notes-text" placeholder="Add your notes here..."></textarea>
+            </div>
+            <div class="modal-actions">
+                <button id="save-notes">Save Notes</button>
+                <button id="close-notes-modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Reminder -->
+    <div class="modal" id="reminder-modal">
+        <div class="modal-content">
+            <h3>Set Study Reminder</h3>
+            <div style="margin: 15px 0;">
+                <label for="reminder-time">Remind me at:</label>
+                <input type="datetime-local" id="reminder-time" style="padding: 8px; width: 100%; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px;">
+            </div>
+            <div style="margin: 15px 0;">
+                <label for="reminder-message">Message:</label>
+                <input type="text" id="reminder-message" placeholder="Study reminder" style="padding: 8px; width: 100%; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px;">
+            </div>
+            <div class="modal-actions">
+                <button id="set-reminder">Set Reminder</button>
+                <button id="close-reminder-modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample syllabus data with the requested subjects and chapters
+        const syllabusData = [
+            {
+                id: "physics",
+                name: "Physics",
+                color: "physics",
+                pdfs: [],
+                chapters: [
+                    { id: "vector", name: "Vector", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "newtonian", name: "Newtonian Mechanics", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "work-power", name: "Work, Power & Energy", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "gravitation", name: "Gravitation & Gravity", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "structural", name: "Structural Properties of Matter", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "periodic", name: "Periodic Motion", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "ideal-gas", name: "Ideal Gas", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "thermodynamics", name: "Thermodynamics", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "electrostatics", name: "Electrostatics", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "current-electricity", name: "Current Electricity", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "optics", name: "Physical Optics", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "modern-physics", name: "Introduction of Modern Physics", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "atomic", name: "Atomic Model & Nuclear Physics", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "semiconductor", name: "Semiconductor & Electronics", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 }
+                ]
+            },
+            {
+                id: "chemistry",
+                name: "Chemistry",
+                color: "chemistry",
+                pdfs: [],
+                chapters: [
+                    { id: "qualitative", name: "Qualitative Chemistry", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "periodic-properties", name: "Periodic Properties & Bonding", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "chemical-change", name: "Chemical Change", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "vocational", name: "Vocational Chemistry", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "environmental", name: "Environmental Chemistry", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "organic", name: "Organic Chemistry", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "quantitative", name: "Quantitative Chemistry", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "electro-chemistry", name: "Electro-chemistry", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 }
+                ]
+            },
+            {
+                id: "math",
+                name: "Higher Mathematics",
+                color: "math",
+                pdfs: [],
+                chapters: [
+                    { id: "matrix", name: "Matrix & Determinant", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "straight-line", name: "Straight Line", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "circle", name: "Circle", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "trigonometry", name: "Trigonometry", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "differentiation", name: "Differentiation", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "integration", name: "Integration", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "complex-number", name: "Complex Number", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "polynomials", name: "Polynomials & Polynomial Equation", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "inverse-trig", name: "Inverse Trigonometry", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "conics", name: "Conics", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "statics", name: "Statics", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "dynamics", name: "Dynamics", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 }
+                ]
+            },
+            {
+                id: "biology",
+                name: "Biology",
+                color: "biology",
+                pdfs: [],
+                chapters: [
+                    { id: "cell", name: "Cell & Cell Structure", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "cell-division", name: "Cell Division", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "microbiology", name: "Microbiology", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "plants", name: "Gymnosperms & Angiosperms", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "tissue", name: "Tissue & Tissue System", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "plant-physiology", name: "Plant Physiology", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "biotechnology", name: "Biotechnology", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "animal-diversity", name: "Animal Diversity & Classification", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "animal-identity", name: "Animal Identity", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "digestion", name: "Digestion & Absorption", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "blood", name: "Blood & Circulation", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "respiration", name: "Respiration & Breathing", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "locomotion", name: "Locomotion & Movement", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 },
+                    { id: "genetics", name: "Genetics & Evolution", parts: { basics: 0, practice: 0, mark: "" }, notes: "", timeSpent: 0 }
+                ]
+            }
+        ];
+
+        // Motivational quotes
+        const motivationalQuotes = [
+            { text: "The journey of a thousand miles begins with a single step.", author: "Lao Tzu" },
+            { text: "Education is the most powerful weapon which you can use to change the world.", author: "Nelson Mandela" },
+            { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
+            { text: "Success is not final, failure is not fatal: It is the courage to continue that counts.", author: "Winston Churchill" },
+            { text: "The harder you work for something, the greater you'll feel when you achieve it.", author: "Unknown" },
+            { text: "Don't let what you cannot do interfere with what you can do.", author: "John Wooden" },
+            { text: "Your time is limited, don't waste it living someone else's life.", author: "Steve Jobs" },
+            { text: "It's not about having time, it's about making time.", author: "Unknown" },
+            { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
+            { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" }
+        ];
+
+        // Global variables
+        let currentUser = null;
+        let studySessions = [];
+        let collaborators = [];
+        let progressChart = null;
+        let timers = {};
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load data from localStorage if available
+            let savedData = JSON.parse(localStorage.getItem('syllabusData'));
+            let progress = JSON.parse(localStorage.getItem('syllabusProgress')) || {};
+            let customBg = localStorage.getItem('customBackground');
+            let userData = JSON.parse(localStorage.getItem('userData'));
+            let sessions = JSON.parse(localStorage.getItem('studySessions')) || [];
+            let collabData = JSON.parse(localStorage.getItem('collaborators')) || [];
+            
+            if (savedData) {
+                // Merge saved data with default structure to ensure new properties are added
+                syllabusData.forEach((subject, index) => {
+                    if (savedData[index]) {
+                        subject.pdfs = savedData[index].pdfs || [];
+                        // Preserve any custom chapters added
+                        if (savedData[index].chapters) {
+                            subject.chapters = savedData[index].chapters;
+                        }
+                    }
+                });
+            }
+            
+            if (userData) {
+                currentUser = userData;
+                showUserInfo();
+            }
+            
+            if (sessions) {
+                studySessions = sessions;
+            }
+            
+            if (collabData) {
+                collaborators = collabData;
+            }
+            
+            // Apply custom background if set
+            if (customBg) {
+                document.body.style.setProperty('--background-image', `url(${customBg})`);
+                document.body.style.setProperty('--background-color', 'transparent');
+            }
+            
+            // Set a random motivational quote
+            setRandomQuote();
+            
+            // Render the syllabus
+            renderSyllabus(progress);
+            
+            // Initialize calendar
+            initCalendar();
+            
+            // Initialize tabs
+            initTabs();
+            
+            // Add event listeners to buttons
+            document.getElementById('save-btn').addEventListener('click', saveProgress);
+            document.getElementById('reset-btn').addEventListener('click', resetProgress);
+            document.getElementById('export-btn').addEventListener('click', exportData);
+            document.getElementById('import-btn').addEventListener('click', () => document.getElementById('import-file').click());
+            document.getElementById('import-file').addEventListener('change', importData);
+            document.getElementById('reminder-btn').addEventListener('click', () => {
+                document.getElementById('reminder-modal').style.display = 'flex';
+            });
+            document.getElementById('notifications-btn').addEventListener('click', requestNotificationPermission);
+            
+            // Add event listener for adding new subjects
+            document.getElementById('add-subject-btn').addEventListener('click', addNewSubject);
+            
+            // Theme selector functionality
+            document.querySelectorAll('.theme-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (this.id === 'theme-custom') {
+                        document.getElementById('custom-theme-panel').style.display = 'block';
+                        return;
+                    }
+                    
+                    document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Apply theme
+                    applyTheme(this.id);
+                    document.getElementById('custom-theme-panel').style.display = 'none';
+                });
+            });
+            
+            // Background upload functionality
+            document.getElementById('apply-bg').addEventListener('click', applyCustomBackground);
+            document.getElementById('reset-bg').addEventListener('click', resetBackground);
+            
+            // PDF modal functionality
+            document.getElementById('close-pdf-modal').addEventListener('click', () => {
+                document.getElementById('pdf-modal').style.display = 'none';
+            });
+            
+            document.getElementById('pdf-upload').addEventListener('change', handlePdfUpload);
+            
+            // Notes modal functionality
+            document.getElementById('close-notes-modal').addEventListener('click', () => {
+                document.getElementById('notes-modal').style.display = 'none';
+            });
+            
+            document.getElementById('save-notes').addEventListener('click', saveNotes);
+            
+            // Reminder modal functionality
+            document.getElementById('close-reminder-modal').addEventListener('click', () => {
+                document.getElementById('reminder-modal').style.display = 'none';
+            });
+            
+            document.getElementById('set-reminder').addEventListener('click', setReminder);
+            
+            // Auth functionality
+            document.getElementById('google-signin').addEventListener('click', () => simulateAuth('Google'));
+            document.getElementById('github-signin').addEventListener('click', () => simulateAuth('GitHub'));
+            document.getElementById('sign-out').addEventListener('click', signOut);
+            
+            // Collaboration functionality
+            document.getElementById('send-invite').addEventListener('click', sendInvite);
+            
+            // Calendar functionality
+            document.getElementById('add-to-calendar').addEventListener('click', addStudySession);
+            
+            // Initialize analytics chart
+            initProgressChart();
+        });
+
+        // Function to render the syllabus
+        function renderSyllabus(progress) {
+            const container = document.getElementById('subjects-container');
+            container.innerHTML = '';
+            
+            let totalParts = 0;
+            let completedParts = 0;
+            let totalTime = 0;
+            
+            syllabusData.forEach(subject => {
+                const subjectElement = document.createElement('div');
+                subjectElement.className = `subject ${subject.color}`;
+                
+                // Create subject header
+                const subjectHeader = document.createElement('div');
+                subjectHeader.className = 'subject-header';
+                
+                const subjectTitle = document.createElement('h2');
+                subjectTitle.className = 'subject-title';
+                subjectTitle.textContent = subject.name;
+                
+                const subjectActions = document.createElement('div');
+                subjectActions.className = 'subject-actions';
+                
+                const addChapterBtn = document.createElement('button');
+                addChapterBtn.className = 'add-chapter-btn';
+                addChapterBtn.innerHTML = '<i class="fas fa-plus"></i> Chapter';
+                addChapterBtn.addEventListener('click', () => addNewChapter(subject.id));
+                
+                const uploadPdfBtn = document.createElement('button');
+                uploadPdfBtn.className = 'upload-pdf-btn';
+                uploadPdfBtn.innerHTML = '<i class="fas fa-file-pdf"></i> PDF';
+                uploadPdfBtn.addEventListener('click', () => openPdfModal(subject.id, subject.name));
+                
+                subjectActions.appendChild(addChapterBtn);
+                subjectActions.appendChild(uploadPdfBtn);
+                
+                subjectHeader.appendChild(subjectTitle);
+                subjectHeader.appendChild(subjectActions);
+                subjectElement.appendChild(subjectHeader);
+                
+                // Display PDF list if available
+                if (subject.pdfs && subject.pdfs.length > 0) {
+                    const pdfContainer = document.createElement('div');
+                    pdfContainer.className = 'pdf-list';
+                    pdfContainer.style.marginBottom = '15px';
+                    
+                    subject.pdfs.forEach((pdf, index) => {
+                        const pdfItem = document.createElement('div');
+                        pdfItem.className = 'pdf-item';
+                        
+                        const pdfLink = document.createElement('a');
+                        pdfLink.href = pdf.url;
+                        pdfLink.target = '_blank';
+                        pdfLink.textContent = pdf.name;
+                        
+                        const deletePdf = document.createElement('span');
+                        deletePdf.className = 'delete-pdf';
+                        deletePdf.innerHTML = '<i class="fas fa-trash"></i>';
+                        deletePdf.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            deletePdfFile(subject.id, index);
+                        });
+                        
+                        pdfItem.appendChild(pdfLink);
+                        pdfItem.appendChild(deletePdf);
+                        pdfContainer.appendChild(pdfItem);
+                    });
+                    
+                    subjectElement.appendChild(pdfContainer);
+                }
+                
+                // Create chapters
+                subject.chapters.forEach(chapter => {
+                    totalTime += chapter.timeSpent || 0;
+                    
+                    const chapterElement = document.createElement('div');
+                    chapterElement.className = 'chapter';
+                    chapterElement.dataset.id = `${subject.id}-${chapter.id}`;
+                    
+                    const chapterHeader = document.createElement('div');
+                    chapterHeader.className = 'chapter-header';
+                    
+                    const chapterTitle = document.createElement('h3');
+                    chapterTitle.className = 'chapter-title';
+                    chapterTitle.textContent = chapter.name;
+                    
+                    const chapterActions = document.createElement('div');
+                    chapterActions.style.display = 'flex';
+                    chapterActions.style.gap = '5px';
+                    
+                    const notesBtn = document.createElement('button');
+                    notesBtn.className = 'notes-btn';
+                    notesBtn.innerHTML = '<i class="fas fa-sticky-note"></i>';
+                    notesBtn.title = 'Add notes';
+                    notesBtn.addEventListener('click', () => openNotesModal(subject.id, chapter.id, chapter.name));
+                    
+                    const timerBtn = document.createElement('button');
+                    timerBtn.className = 'notes-btn';
+                    timerBtn.innerHTML = '<i class="fas fa-clock"></i>';
+                    timerBtn.title = 'Start timer';
+                    timerBtn.addEventListener('click', () => toggleTimer(subject.id, chapter.id));
+                    
+                    chapterActions.appendChild(notesBtn);
+                    chapterActions.appendChild(timerBtn);
+                    
+                    chapterHeader.appendChild(chapterTitle);
+                    chapterHeader.appendChild(chapterActions);
+                    chapterElement.appendChild(chapterHeader);
+                    
+                    // Add time spent display
+                    if (chapter.timeSpent > 0) {
+                        const timeDisplay = document.createElement('div');
+                        timeDisplay.className = 'chapter-time';
+                        timeDisplay.textContent = `Time spent: ${formatTime(chapter.timeSpent)}`;
+                        chapterElement.appendChild(timeDisplay);
+                    }
+                    
+                    // Create chapter parts
+                    const partsContainer = document.createElement('div');
+                    partsContainer.className = 'chapter-parts';
+                    
+                    // Basics part
+                    const basicsPart = document.createElement('div');
+                    basicsPart.className = 'part';
+                    
+                    const basicsTitle = document.createElement('span');
+                    basicsTitle.className = 'part-title';
+                    basicsTitle.textContent = 'Basics (Book & Notes)';
+                    
+                    const basicsProgress = document.createElement('div');
+                    basicsProgress.className = 'circle-progress';
+                    basicsProgress.style.background = `conic-gradient(var(--success) ${chapter.parts.basics * 36}deg, #e9ecef 0deg)`;
+                    basicsProgress.dataset.type = 'basics';
+                    basicsProgress.dataset.value = chapter.parts.basics;
+                    basicsProgress.addEventListener('click', () => {
+                        let newValue = (parseInt(basicsProgress.dataset.value) + 1) % 11;
+                        basicsProgress.dataset.value = newValue;
+                        basicsProgress.style.background = `conic-gradient(var(--success) ${newValue * 36}deg, #e9ecef 0deg)`;
+                        updateProgress();
+                    });
+                    
+                    basicsPart.appendChild(basicsTitle);
+                    basicsPart.appendChild(basicsProgress);
+                    partsContainer.appendChild(basicsPart);
+                    
+                    // Practice part
+                    const practicePart = document.createElement('div');
+                    practicePart.className = 'part';
+                    
+                    const practiceTitle = document.createElement('span');
+                    practiceTitle.className = 'part-title';
+                    practiceTitle.textContent = 'Master QB Practice';
+                    
+                    const practiceProgress = document.createElement('div');
+                    practiceProgress.className = 'circle-progress';
+                    practiceProgress.style.background = `conic-gradient(var(--success) ${chapter.parts.practice * 36}deg, #e9ecef 0deg)`;
+                    practiceProgress.dataset.type = 'practice';
+                    practiceProgress.dataset.value = chapter.parts.practice;
+                    practiceProgress.addEventListener('click', () => {
+                        let newValue = (parseInt(practiceProgress.dataset.value) + 1) % 11;
+                        practiceProgress.dataset.value = newValue;
+                        practiceProgress.style.background = `conic-gradient(var(--success) ${newValue * 36}deg, #e9ecef 0deg)`;
+                        updateProgress();
+                    });
+                    
+                    practicePart.appendChild(practiceTitle);
+                    practicePart.appendChild(practiceProgress);
+                    partsContainer.appendChild(practicePart);
+                    
+                    // Exam mark part
+                    const examPart = document.createElement('div');
+                    examPart.className = 'part';
+                    
+                    const examTitle = document.createElement('span');
+                    examTitle.className = 'part-title';
+                    examTitle.textContent = 'Exam Mark';
+                    
+                    const examInput = document.createElement('input');
+                    examInput.type = 'text';
+                    examInput.className = 'mark-input';
+                    examInput.placeholder = '0';
+                    examInput.value = chapter.parts.mark;
+                    examInput.addEventListener('change', updateProgress);
+                    
+                    examPart.appendChild(examTitle);
+                    examPart.appendChild(examInput);
+                    partsContainer.appendChild(examPart);
+                    
+                    chapterElement.appendChild(partsContainer);
+                    subjectElement.appendChild(chapterElement);
+                    
+                    // Update counts
+                    totalParts += 2; // Basics and Practice
+                    completedParts += parseInt(basicsProgress.dataset.value) + parseInt(practiceProgress.dataset.value);
+                });
+                
+                container.appendChild(subjectElement);
+            });
+            
+            // Update total time display
+            document.getElementById('total-time').textContent = formatTime(totalTime);
+            
+            // Add the "Add Subject" button
+            const addSubjectBtn = document.createElement('div');
+            addSubjectBtn.className = 'add-subject-btn';
+            addSubjectBtn.id = 'add-subject-btn';
+            addSubjectBtn.innerHTML = '<div class="add-icon"><i class="fas fa-plus-circle"></i></div>';
+            container.appendChild(addSubjectBtn);
+            
+            // Update overall progress
+            updateProgressDisplays(totalParts, completedParts);
+            
+            // Update analytics chart
+            updateProgressChart();
+            
+            // Update collaborators list
+            updateCollaboratorsList();
+        }
+
+        // Function to update progress displays
+        function updateProgressDisplays(total, completed) {
+            const percentage = total > 0 ? Math.round((completed / (total * 10)) * 100) : 0;
+            
+            document.getElementById('progress-percentage').textContent = `${percentage}%`;
+            document.getElementById('completed-count').textContent = completed;
+            document.getElementById('total-count').textContent = total * 10;
+            
+            document.querySelector('.progress-fill').style.width = `${percentage}%`;
+        }
+
+        // Function to update progress (to be called when any progress element changes)
+        function updateProgress() {
+            let totalParts = 0;
+            let completedParts = 0;
+            
+            document.querySelectorAll('.chapter').forEach(chapter => {
+                const basicsProgress = chapter.querySelector('[data-type="basics"]');
+                const practiceProgress = chapter.querySelector('[data-type="practice"]');
+                
+                if (basicsProgress) {
+                    completedParts += parseInt(basicsProgress.dataset.value);
+                    totalParts += 10;
+                }
+                
+                if (practiceProgress) {
+                    completedParts += parseInt(practiceProgress.dataset.value);
+                    totalParts += 10;
+                }
+            });
+            
+            updateProgressDisplays(totalParts/10, completedParts);
+        }
+
+        // Function to save progress to localStorage
+        function saveProgress() {
+            const progress = {};
+            
+            document.querySelectorAll('.chapter').forEach(chapter => {
+                const chapterId = chapter.dataset.id;
+                const basicsProgress = chapter.querySelector('[data-type="basics"]');
+                const practiceProgress = chapter.querySelector('[data-type="practice"]');
+                const markInput = chapter.querySelector('.mark-input');
+                
+                progress[chapterId] = {
+                    basics: basicsProgress ? parseInt(basicsProgress.dataset.value) : 0,
+                    practice: practiceProgress ? parseInt(practiceProgress.dataset.value) : 0,
+                    mark: markInput ? markInput.value : ""
+                };
+            });
+            
+            localStorage.setItem('syllabusProgress', JSON.stringify(progress));
+            localStorage.setItem('syllabusData', JSON.stringify(syllabusData));
+            localStorage.setItem('studySessions', JSON.stringify(studySessions));
+            localStorage.setItem('collaborators', JSON.stringify(collaborators));
+            
+            // Show confirmation with Toastify
+            Toastify({
+                text: "Progress saved successfully!",
+                duration: 3000,
+                gravity: "bottom",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+            }).showToast();
+        }
+
+        // Function to reset all progress
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+                localStorage.removeItem('syllabusProgress');
+                syllabusData.forEach(subject => {
+                    subject.chapters.forEach(chapter => {
+                        chapter.parts = { basics: 0, practice: 0, mark: "" };
+                        chapter.timeSpent = 0;
+                    });
+                });
+                studySessions = [];
+                renderSyllabus({});
+                
+                Toastify({
+                    text: "All progress has been reset",
+                    duration: 3000,
+                    gravity: "bottom",
+                    position: "right",
+                    backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                }).showToast();
+            }
+        }
+
+        // Function to add a new chapter
+        function addNewChapter(subjectId) {
+            const chapterName = prompt('Enter the name of the new chapter:');
+            if (chapterName) {
+                const subject = syllabusData.find(s => s.id === subjectId);
+                if (subject) {
+                    const newChapterId = chapterName.toLowerCase().replace(/\s+/g, '-');
+                    subject.chapters.push({
+                        id: newChapterId,
+                        name: chapterName,
+                        parts: { basics: 0, practice: 0, mark: "" },
+                        notes: "",
+                        timeSpent: 0
+                    });
+                    
+                    // Save the updated syllabus structure
+                    localStorage.setItem('syllabusData', JSON.stringify(syllabusData));
+                    
+                    // Re-render the syllabus
+                    renderSyllabus(JSON.parse(localStorage.getItem('syllabusProgress')) || {});
+                    
+                    Toastify({
+                        text: "Chapter added successfully!",
+                        duration: 3000,
+                        gravity: "bottom",
+                        position: "right",
+                        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                    }).showToast();
+                }
+            }
+        }
+
+        // Function to add a new subject
+        function addNewSubject() {
+            const subjectName = prompt('Enter the name of the new subject:');
+            if (subjectName) {
+                const newSubjectId = subjectName.toLowerCase().replace(/\s+/g, '-');
+                const colors = ['physics', 'chemistry', 'math', 'biology'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                syllabusData.push({
+                    id: newSubjectId,
+                    name: subjectName,
+                    color: randomColor,
+                    pdfs: [],
+                    chapters: []
+                });
+                
+                // Save the updated syllabus structure
+                    localStorage.setItem('syllabusData', JSON.stringify(syllabusData));
+                
+                // Re-render the syllabus
+                renderSyllabus(JSON.parse(localStorage.getItem('syllabusProgress')) || {});
+                
+                Toastify({
+                    text: "Subject added successfully!",
+                    duration: 3000,
+                    gravity: "bottom",
+                    position: "right",
+                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                }).showToast();
+            }
+        }
+
+        // Function to set a random motivational quote
+        function setRandomQuote() {
+            const randomIndex = Math.floor(Math.random() * motivationalQuotes.length);
+            const quote = motivationalQuotes[randomIndex];
+            
+            document.getElementById('motivational-quote').textContent = `"${quote.text}"`;
+            document.querySelector('.quote-author').textContent = `- ${quote.author}`;
+        }
+
+        // Function to apply theme
+        function applyTheme(themeId) {
+            switch(themeId) {
+                case 'theme-light':
+                    document.body.style.setProperty('--background-color', '#f5f7fb');
+                    document.body.style.setProperty('--background-image', 'none');
+                    localStorage.removeItem('customBackground');
+                    break;
+                case 'theme-dark':
+                    document.body.style.setProperty('--background-color', '#212529');
+                    document.body.style.setProperty('--background-image', 'none');
+                    localStorage.removeItem('customBackground');
+                    break;
+                case 'theme-blue':
+                    document.body.style.setProperty('--background-color', '#4361ee');
+                    document.body.style.setProperty('--background-image', 'none');
+                    localStorage.removeItem('customBackground');
+                    break;
+                case 'theme-green':
+                    document.body.style.setProperty('--background-color', '#2ec4b6');
+                    document.body.style.setProperty('--background-image', 'none');
+                    localStorage.removeItem('customBackground');
+                    break;
+            }
+        }
+
+        // Function to apply custom background
+        function applyCustomBackground() {
+            const fileInput = document.getElementById('bg-upload');
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const imageUrl = e.target.result;
+                    document.body.style.setProperty('--background-image', `url(${imageUrl})`);
+                    document.body.style.setProperty('--background-color', 'transparent');
+                    localStorage.setItem('customBackground', imageUrl);
+                    
+                    // Set custom theme button as active
+                    document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+                    document.getElementById('theme-custom').classList.add('active');
+                    
+                    Toastify({
+                        text: "Background updated successfully!",
+                        duration: 3000,
+                        gravity: "bottom",
+                        position: "right",
+                        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                    }).showToast();
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Function to reset background
+        function resetBackground() {
+            document.body.style.setProperty('--background-image', 'none');
+            document.body.style.setProperty('--background-color', '#f5f7fb');
+            localStorage.removeItem('customBackground');
+            
+            // Set light theme as active
+            document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('theme-light').classList.add('active');
+            
+            Toastify({
+                text: "Background reset to default",
+                duration: 3000,
+                gravity: "bottom",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+            }).showToast();
+        }
+
+        // Function to open PDF modal
+        function openPdfModal(subjectId, subjectName) {
+            document.getElementById('pdf-subject-name').textContent = subjectName;
+            const pdfList = document.getElementById('pdf-list');
+            pdfList.innerHTML = '';
+            
+            const subject = syllabusData.find(s => s.id === subjectId);
+            if (subject && subject.pdfs.length > 0) {
+                subject.pdfs.forEach((pdf, index) => {
+                    const pdfItem = document.createElement('div');
+                    pdfItem.className = 'pdf-item';
+                    
+                    const pdfLink = document.createElement('a');
+                    pdfLink.href = pdf.url;
+                    pdfLink.target = '_blank';
+                    pdfLink.textContent = pdf.name;
+                    
+                    const deletePdf = document.createElement('span');
+                    deletePdf.className = 'delete-pdf';
+                    deletePdf.innerHTML = '<i class="fas fa-trash"></i>';
+                    deletePdf.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        deletePdfFile(subjectId, index);
+                        openPdfModal(subjectId, subjectName); // Refresh the list
+                    });
+                    
+                    pdfItem.appendChild(pdfLink);
+                    pdfItem.appendChild(deletePdf);
+                    pdfList.appendChild(pdfItem);
+                });
+            } else {
+                pdfList.innerHTML = '<p>No PDFs uploaded yet.</p>';
+            }
+            
+            // Set current subject id on the upload input
+            document.getElementById('pdf-upload').dataset.subjectId = subjectId;
+            document.getElementById('pdf-modal').style.display = 'flex';
+        }
+
+        // Function to handle PDF upload
+        function handlePdfUpload(event) {
+            const file = event.target.files[0];
+            if (file && file.type === 'application/pdf') {
+                const subjectId = event.target.dataset.subjectId;
+                const subject = syllabusData.find(s => s.id === subjectId);
+                
+                if (subject) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const pdfData = {
+                            name: file.name,
+                            url: e.target.result
+                        };
+                        
+                        if (!subject.pdfs) {
+                            subject.pdfs = [];
+                        }
+                        
+                        subject.pdfs.push(pdfData);
+                        localStorage.setItem('syllabusData', JSON.stringify(syllabusData));
+                        
+                        // Refresh the PDF list
+                        openPdfModal(subjectId, subject.name);
+                        
+                        // Re-render the syllabus to show the new PDF
+                        renderSyllabus(JSON.parse(localStorage.getItem('syllabusProgress')) || {});
+                        
+                        Toastify({
+                            text: "PDF uploaded successfully!",
+                            duration: 3000,
+                            gravity: "bottom",
+                            position: "right",
+                            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                        }).showToast();
+                    };
+                    
+                    reader.readAsDataURL(file);
+                }
+            } else {
+                Toastify({
+                    text: "Please select a valid PDF file.",
+                    duration: 3000,
+                    gravity: "bottom",
+                    position: "right",
+                    backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                }).showToast();
+            }
+        }
+
+        // Function to delete PDF file
+        function deletePdfFile(subjectId, index) {
+            const subject = syllabusData.find(s => s.id === subjectId);
+            if (subject && subject.pdfs) {
+                subject.pdfs.splice(index, 1);
+                localStorage.setItem('syllabusData', JSON.stringify(syllabusData));
+                
+                // Re-render the syllabus
+                renderSyllabus(JSON.parse(localStorage.getItem('syllabusProgress')) || {});
+                
+                Toastify({
+                    text: "PDF deleted successfully!",
+                    duration: 3000,
+                    gravity: "bottom",
+                    position: "right",
+                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                }).showToast();
+            }
+        }
+
+        // Function to open notes modal
+        function openNotesModal(subjectId, chapterId, chapterName) {
+            document.getElementById('notes-chapter-name').textContent = chapterName;
+            
+            const subject = syllabusData.find(s => s.id === subjectId);
+            if (subject) {
+                const chapter = subject.chapters.find(c => c.id === chapterId);
+                if (chapter) {
+                    document.getElementById('notes-text').value = chapter.notes || '';
+                    document.getElementById('notes-modal').dataset.subjectId = subjectId;
+                    document.getElementById('notes-modal').dataset.chapterId = chapterId;
+                    document.getElementById('notes-modal').style.display = 'flex';
+                }
+            }
+        }
+
+        // Function to save notes
+        function saveNotes() {
+            const subjectId = document.getElementById('notes-modal').dataset.subjectId;
+            const chapterId = document.getElementById('notes-modal').dataset.chapterId;
+            const notesText = document.getElementById('notes-text').value;
+            
+            const subject = syllabusData.find(s => s.id === subjectId);
+            if (subject) {
+                const chapter = subject.chapters.find(c => c.id === chapterId);
+                if (chapter) {
+                    chapter.notes = notesText;
+                    localStorage.setItem('syllabusData', JSON.stringify(syllabusData));
+                    
+                    document.getElementById('notes-modal').style.display = 'none';
+                    
+                    Toastify({
+                        text: "Notes saved successfully!",
+                        duration: 3000,
+                        gravity: "bottom",
+                        position: "right",
+                        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                    }).showToast();
+                }
+            }
+        }
+
+        // Function to toggle timer for a chapter
+        function toggleTimer(subjectId, chapterId) {
+            const timerKey = `${subjectId}-${chapterId}`;
+            
+            if (timers[timerKey]) {
+                // Stop the timer
+                clearInterval(timers[timerKey]);
+                delete timers[timerKey];
+                
+                Toastify({
+                    text: "Timer stopped",
+                    duration: 3000,
+                    gravity: "bottom",
+                    position: "right",
+                    backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                }).showToast();
+            } else {
+                // Start the timer
+                const startTime = Date.now();
+                
+                timers[timerKey] = setInterval(() => {
+                    const subject = syllabusData.find(s => s.id === subjectId);
+                    if (subject) {
+                        const chapter = subject.chapters.find(c => c.id === chapterId);
+                        if (chapter) {
+                            const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+                            chapter.timeSpent = (chapter.timeSpent || 0) + 1;
+                            
+                            // Update the UI every minute
+                            if (elapsedSeconds % 60 === 0) {
+                                renderSyllabus(JSON.parse(localStorage.getItem('syllabusProgress')) || {});
+                            }
+                        }
+                    }
+                }, 1000);
+                
+                Toastify({
+                    text: "Timer started - studying time is being tracked",
+                    duration: 3000,
+                    gravity: "bottom",
+                    position: "right",
+                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                }).showToast();
+            }
+        }
+
+        // Function to format time
+        function formatTime(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            return `${hours}h ${minutes}m`;
+        }
+
+        // Function to set reminder
+        function setReminder() {
+            const reminderTime = document.getElementById('reminder-time').value;
+            const reminderMessage = document.getElementById('reminder-message').value || 'Study reminder';
+            
+            if (!reminderTime) {
+                Toastify({
+                    text: "Please select a time for the reminder",
+                    duration: 3000,
+                    gravity: "bottom",
+                    position: "right",
+                    backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                }).showToast();
+                return;
+            }
+            
+            const now = new Date();
+            const selectedTime = new Date(reminderTime);
+            
+            if (selectedTime <= now) {
+                Toastify({
+                    text: "Please select a future time for the reminder",
+                    duration: 3000,
+                    gravity: "bottom",
+                    position: "right",
+                    backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                }).showToast();
+                return;
+            }
+            
+            const timeUntilReminder = selectedTime.getTime() - now.getTime();
+            
+            setTimeout(() => {
+                // Show browser notification if permission granted
+                if (Notification.permission === 'granted') {
+                    new Notification('StudyFlow Reminder', {
+                        body: reminderMessage,
+                        icon: 'https://example.com/icon.png' // Replace with your icon URL
+                    });
+                }
+                
+                // Show toast notification
+                Toastify({
+                    text: reminderMessage,
+                    duration: 10000,
+                    gravity: "top",
+                    position: "center",
+                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                }).showToast();
+            }, timeUntilReminder);
+            
+            document.getElementById('reminder-modal').style.display = 'none';
+            
+            Toastify({
+                text: "Reminder set successfully!",
+                duration: 3000,
+                gravity: "bottom",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+            }).showToast();
+        }
+
+        // Function to request notification permission
+        function requestNotificationPermission() {
+            if ('Notification' in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        Toastify({
+                            text: "Notifications enabled!",
+                            duration: 3000,
+                            gravity: "bottom",
+                            position: "right",
+                            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                        }).showToast();
+                    }
+                });
+            } else {
+                Toastify({
+                    text: "This browser does not support notifications",
+                    duration: 3000,
+                    gravity: "bottom",
+                    position: "right",
+                    backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                }).showToast();
+            }
+        }
+
+        // Function to simulate authentication
+        function simulateAuth(provider) {
+            // In a real app, this would integrate with Firebase Auth or similar
+            const randomName = provider === 'Google' ? 'Google User' : 'GitHub User';
+            const randomEmail = provider === 'Google' ? 'user@gmail.com' : 'user@github.com';
+            
+            currentUser = {
+                name: randomName,
+                email: randomEmail,
+                avatar: provider.charAt(0)
+            };
+            
+            localStorage.setItem('userData', JSON.stringify(currentUser));
+            showUserInfo();
+            
+            Toastify({
+                text: `Signed in with ${provider} successfully!`,
+                duration: 3000,
+                gravity: "bottom",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+            }).showToast();
+        }
+
+        // Function to show user info
+        function showUserInfo() {
+            document.getElementById('auth-buttons').style.display = 'none';
+            document.getElementById('user-info').style.display = 'flex';
+            document.getElementById('user-name').textContent = currentUser.name;
+            document.getElementById('user-avatar').textContent = currentUser.avatar;
+        }
+
+        // Function to sign out
+        function signOut() {
+            currentUser = null;
+            localStorage.removeItem('userData');
+            
+            document.getElementById('auth-buttons').style.display = 'flex';
+            document.getElementById('user-info').style.display = 'none';
+            
+            Toastify({
+                text: "Signed out successfully",
+                duration: 3000,
+                gravity: "bottom",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+            }).showToast();
+        }
+
+        // Function to initialize tabs
+        function initTabs() {
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // Show active tab content
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === `${tabId}-tab`) {
+                            content.classList.add('active');
+                        }
+                    });
+                    
+                    // If analytics tab is selected, update the chart
+                    if (tabId === 'analytics') {
+                        updateProgressChart();
+                    }
+                    
+                    // If collaboration tab is selected, update the user list
+                    if (tabId === 'collaboration') {
+                        updateCollaboratorsList();
+                    }
+                });
+            });
+        }
+
+        // Function to initialize progress chart
+        function initProgressChart() {
+            const ctx = document.getElementById('progress-chart').getContext('2d');
+            progressChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Completion %',
+                        data: [],
+                        backgroundColor: 'rgba(67, 97, 238, 0.7)',
+                        borderColor: 'rgba(67, 97, 238, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        }
+
+        // Function to update progress chart
+        function updateProgressChart() {
+            if (!progressChart) return;
+            
+            const subjects = [];
+            const completionData = [];
+            
+            syllabusData.forEach(subject => {
+                let totalParts = 0;
+                let completedParts = 0;
+                
+                subject.chapters.forEach(chapter => {
+                    totalParts += 2; // Basics and Practice
+                    completedParts += chapter.parts.basics + chapter.parts.practice;
+                });
+                
+                const completionPercentage = totalParts > 0 ? Math.round((completedParts / (totalParts * 10)) * 100) : 0;
+                
+                subjects.push(subject.name);
+                completionData.push(completionPercentage);
+            });
+            
+            progressChart.data.labels = subjects;
+            progressChart.data.datasets[0].data = completionData;
+            progressChart.update();
+        }
+
+        // Function to initialize calendar
+        function initCalendar() {
+            const calendar = document.getElementById('study-calendar');
+            // This is a simplified implementation
+            // In a real app, you would use a library like FullCalendar
+            
+            // Display upcoming study sessions
+            updateCalendarDisplay();
+        }
+
+        // Function to update calendar display
+        function updateCalendarDisplay() {
+            const calendar = document.getElementById('study-calendar');
+            
+            if (studySessions.length === 0) {
+                calendar.innerHTML = '<p>No study sessions planned. Click "Add Session" to schedule one.</p>';
+            } else {
+                let html = '<ul>';
+                studySessions.forEach(session => {
+                    const date = new Date(session.date).toLocaleDateString();
+                    html += `<li>${date}: ${session.chapter} (${session.duration} minutes)</li>`;
+                });
+                html += '</ul>';
+                calendar.innerHTML = html;
+            }
+        }
+
+        // Function to add study session
+        function addStudySession() {
+            // In a real app, this would open a modal for selecting chapter, date, and duration
+            const subject = syllabusData[0]; // Default to first subject
+            const chapter = subject.chapters[0]; // Default to first chapter
+            
+            const session = {
+                subject: subject.name,
+                chapter: chapter.name,
+                date: new Date(Date.now() + 86400000).toISOString(), // Tomorrow
+                duration: 60 // 60 minutes
+            };
+            
+            studySessions.push(session);
+            localStorage.setItem('studySessions', JSON.stringify(studySessions));
+            updateCalendarDisplay();
+            
+            Toastify({
+                text: "Study session added to calendar!",
+                duration: 3000,
+                gravity: "bottom",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+            }).showToast();
+        }
+
+        // Function to update collaborators list
+        function updateCollaboratorsList() {
+            const userList = document.getElementById('user-list');
+            userList.innerHTML = '';
+            
+            if (collaborators.length === 0) {
+                userList.innerHTML = '<p>No collaborators yet. Invite someone to join!</p>';
+            } else {
+                collaborators.forEach(user => {
+                    const userBadge = document.createElement('div');
+                    userBadge.className = 'user-badge';
+                    
+                    const avatar = document.createElement('div');
+                    avatar.className = 'user-avatar-sm';
+                    avatar.textContent = user.name.charAt(0);
+                    
+                    const name = document.createElement('span');
+                    name.textContent = user.name;
+                    
+                    userBadge.appendChild(avatar);
+                    userBadge.appendChild(name);
+                    userList.appendChild(userBadge);
+                });
+            }
+        }
+
+        // Function to send invite
+        function sendInvite() {
+            const emailInput = document.getElementById('invite-email');
+            const email = emailInput.value.trim();
+            
+            if (!email) {
+                Toastify({
+                    text: "Please enter an email address",
+                    duration: 3000,
+                    gravity: "bottom",
+                    position: "right",
+                    backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                }).showToast();
+                return;
+            }
+            
+            // Simple email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                Toastify({
+                    text: "Please enter a valid email address",
+                    duration: 3000,
+                    gravity: "bottom",
+                    position: "right",
+                    backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                }).showToast();
+                return;
+            }
+            
+            // In a real app, this would send an actual invitation
+            // For this demo, we'll just add a mock user
+            collaborators.push({
+                name: email.split('@')[0],
+                email: email,
+                avatar: email.charAt(0).toUpperCase()
+            });
+            
+            localStorage.setItem('collaborators', JSON.stringify(collaborators));
+            updateCollaboratorsList();
+            
+            emailInput.value = '';
+            
+            Toastify({
+                text: `Invitation sent to ${email}!`,
+                duration: 3000,
+                gravity: "bottom",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+            }).showToast();
+        }
+
+        // Function to export data
+        function exportData() {
+            const data = {
+                syllabusData: syllabusData,
+                progress: JSON.parse(localStorage.getItem('syllabusProgress') || '{}'),
+                customBackground: localStorage.getItem('customBackground'),
+                studySessions: studySessions,
+                collaborators: collaborators
+            };
+            
+            const dataStr = JSON.stringify(data);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = 'syllabus-tracker-data.json';
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            Toastify({
+                text: "Data exported successfully!",
+                duration: 3000,
+                gravity: "bottom",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+            }).showToast();
+        }
+
+        // Function to import data
+        function importData(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        
+                        // Import syllabus data
+                        if (data.syllabusData) {
+                            // Merge with existing data to preserve structure
+                            data.syllabusData.forEach((importedSubject, index) => {
+                                if (syllabusData[index]) {
+                                    syllabusData[index].pdfs = importedSubject.pdfs || [];
+                                    // Preserve any custom chapters added
+                                    if (importedSubject.chapters) {
+                                        syllabusData[index].chapters = importedSubject.chapters;
+                                    }
+                                }
+                            });
+                        }
+                        
+                        // Import progress
+                        if (data.progress) {
+                            localStorage.setItem('syllabusProgress', JSON.stringify(data.progress));
+                        }
+                        
+                        // Import custom background
+                        if (data.customBackground) {
+                            localStorage.setItem('customBackground', data.customBackground);
+                            document.body.style.setProperty('--background-image', `url(${data.customBackground})`);
+                            document.body.style.setProperty('--background-color', 'transparent');
+                        }
+                        
+                        // Import study sessions
+                        if (data.studySessions) {
+                            studySessions = data.studySessions;
+                            localStorage.setItem('studySessions', JSON.stringify(studySessions));
+                        }
+                        
+                        // Import collaborators
+                        if (data.collaborators) {
+                            collaborators = data.collaborators;
+                            localStorage.setItem('collaborators', JSON.stringify(collaborators));
+                        }
+                        
+                        // Re-render the syllabus
+                        renderSyllabus(data.progress || {});
+                        
+                        Toastify({
+                            text: "Data imported successfully!",
+                            duration: 3000,
+                            gravity: "bottom",
+                            position: "right",
+                            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                        }).showToast();
+                    } catch (error) {
+                        Toastify({
+                            text: "Error importing data: Invalid file format.",
+                            duration: 3000,
+                            gravity: "bottom",
+                            position: "right",
+                            backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                        }).showToast();
+                        console.error(error);
+                    }
+                };
+                reader.readAsText(file);
+            }
+            
+            // Reset the file input
+            event.target.value = '';
+        }
+    </script>
+</body>
+</html>
